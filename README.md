@@ -1,46 +1,43 @@
 # FOOTBALL GUESSER — Legends Edition
 
-Gioco gratuito, solo modalità infinita, grafica calcio vintage anni '90, tre difficoltà, 8 tentativi, statistiche locali e PWA.
+Gioco gratuito di deduzione calcistica, modalità infinita, 8 tentativi, tre difficoltà e stile vintage anni '90. Pubblicato tramite GitHub e Vercel.
 
-## Avvio locale
-
-Richiede Node.js 20 o superiore.
+## Sviluppo
 
 ```bash
 npm install
+npm run build
 npm run dev
 ```
 
-Apri l'indirizzo mostrato dal terminale (di solito http://localhost:5173).
+La cartella principale del repository contiene `main.tsx`, `players.json`, `style.css`, `index.html` e `tsconfig.json`. Non spostarli in `src/` senza aggiornare i percorsi.
 
-## Pubblicazione su GitHub + Vercel
+## Dati e regole
 
-1. Crea un repository GitHub chiamato `football-guesser`.
-2. Carica **il contenuto** di questa cartella nella radice del repository (non caricare `node_modules`).
-3. Su https://vercel.com/new importa il repository GitHub.
-4. Seleziona framework **Vite** (di norma rilevato automaticamente), build `npm run build`, output `dist`.
-5. Premi **Deploy**. Ogni push successivo aggiorna il sito.
-6. Su iPhone apri il sito con Safari → Condividi → Aggiungi alla schermata Home.
+`players.json` contiene 500 schede con nazionalità, ruolo (POR/DIF/CEN/ATT), periodo di massimo rendimento, difficoltà e liste di club.
 
-## Dati
+**Importante:** tutti i 500 record hanno ora una lista di club compilata editorialmente, ma questo NON equivale a una verifica storica indipendente. Prestiti, trasferimenti recenti, nomi delle società ed epoche devono ancora essere controllati contro fonti attendibili. Il flag `clubsVerified` è un indicatore legacy di compilazione, **non** una certificazione della correttezza fattuale. I dati non sono un export ufficiale EA/FIFA.
 
-`src/players.json` contiene esattamente 500 record. `build_data.py` genera i record a partire da una lista redazionale più ampia. **Attenzione:** questa prima versione è un dataset editoriale di prototipazione, non un export EA/FIFA né un archivio storico verificato: club, periodo d'oro, ruolo e livello richiedono revisione manuale prima della pubblicazione definitiva. Il periodo d'oro è una stima editoriale, non una metrica ufficiale. Non presentare questi campi come statistiche ufficiali FIFA.
+- Club: verde se le liste hanno almeno una squadra in comune, dopo normalizzazione di alcune denominazioni; rosso altrimenti. Un dato mancante è grigio.
+- Epoca: confronta il punto centrale degli intervalli editoriali. Verde entro 2 anni; giallo oltre 2 e fino a 6; rosso oltre 6. Freccia verso l'alto se il misterioso è più recente, verso il basso se è precedente.
+- Difficoltà: determina il pool della risposta, non restringe i giocatori che si possono tentare.
+- Le statistiche sono conservate nel browser.
 
-Schema record:
+## Validazione
 
-```json
-{"id":1,"name":"Lionel Messi","nationality":"Argentina","role":"ATT","peak":"2007-2023","clubs":["Barcellona","PSG","Inter Miami"],"difficulty":"facile"}
+```bash
+python scripts/validate_players.py
+npm run build
 ```
 
-- Club: il verde indica almeno un club identico in entrambe le liste.
-- Epoca: verde quando gli intervalli si sovrappongono, giallo quando distano al massimo 5 anni.
-- Difficoltà: modifica solo il pool da cui viene estratta la risposta; la ricerca comprende tutti i 500 nomi.
-- Dati di gioco e statistiche rimangono sul dispositivo (localStorage).
+GitHub Actions esegue questi controlli su push e pull request. La validazione controlla integrità e struttura, **non** la veridicità storica delle carriere. Prima di dichiarare risolta un'issue calcistica serve una revisione delle fonti.
 
-## Licenze e crediti
+**Attenzione ai generatori storici:** `build_data.py` e `review_data.py` sono script precedenti e possono sovrascrivere le correzioni manuali. Non eseguirli per rigenerare `players.json` senza prima allinearli al nuovo dataset.
 
-Progetto indipendente, non affiliato a Electronic Arts, EA SPORTS FC, FIFA o ai club. Niente asset proprietari o database commerciali incorporati. I nomi dei giocatori e le informazioni fattuali sono usati come dati redazionali.
+## Distribuzione
 
-## Revisione dati (20 ottobre 2026)
+Vercel importa questo repository con preset Vite, comando `npm run build` e cartella output `dist`. I commit su `main` possono attivare un nuovo deployment.
 
-Il precedente generatore assegnava erroneamente gli stessi club a interi gruppi di calciatori. La revisione conservativa `review_data.py` ha sostituito tali assegnazioni: **119 schede** hanno club compilati individualmente su base redazionale, mentre **381 schede** sono segnate come non verificate (lista club vuota). Per evitare risposte scorrette, il bersaglio viene estratto soltanto dalle schede con club compilati; tutti i 500 nomi rimangono disponibili come tentativi. Il giallo `N/D` significa dato mancante, non club diverso. **Non è una verifica completa da fonti EA/FIFA**: per la pubblicazione definitiva occorre controllare individualmente tutti i 500 giocatori, i ruoli e gli intervalli di picco. `build_data.py` è uno script storico di prototipazione e NON deve essere eseguito per rigenerare i dati revisionati.
+## Licenza e attribuzione
+
+Progetto indipendente non affiliato a FIFA, EA SPORTS, club o federazioni. Nessun database proprietario FIFA è incluso.
