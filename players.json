@@ -4,7 +4,7 @@
     "name": "Diego Maradona",
     "nationality": "Argentina",
     "role": "ATT",
-    "peak": "1986-1994",
+    "peak": "1986-1990",
     "clubs": [
       "Napoli",
       "Barcellona",
@@ -18,7 +18,7 @@
     "name": "Sergio Agüero",
     "nationality": "Argentina",
     "role": "ATT",
-    "peak": "2004-2014",
+    "peak": "2014-2020",
     "clubs": [
       "Atlético Madrid",
       "Manchester City",
@@ -32,7 +32,7 @@
     "name": "Ángel Di María",
     "nationality": "Argentina",
     "role": "ATT",
-    "peak": "2004-2014",
+    "peak": "2014-2022",
     "clubs": [
       "Benfica",
       "Real Madrid",
@@ -48,7 +48,7 @@
     "name": "Lionel Messi",
     "nationality": "Argentina",
     "role": "ATT",
-    "peak": "2007-2023",
+    "peak": "2009-2015",
     "clubs": [
       "Barcellona",
       "PSG",
@@ -62,7 +62,7 @@
     "name": "Emiliano Martínez",
     "nationality": "Argentina",
     "role": "POR",
-    "peak": "2019-2026",
+    "peak": "2021-2024",
     "clubs": [
       "Arsenal",
       "Aston Villa"
@@ -75,7 +75,7 @@
     "name": "Romário",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "1986-1995",
+    "peak": "1992-1995",
     "clubs": [
       "PSV",
       "Barcellona",
@@ -90,7 +90,7 @@
     "name": "Ronaldo Nazário",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "1995-2006",
+    "peak": "1996-2002",
     "clubs": [
       "PSV",
       "Barcellona",
@@ -107,7 +107,7 @@
     "name": "Rivaldo",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "1995-2006",
+    "peak": "1997-2002",
     "clubs": [
       "Deportivo La Coruña",
       "Barcellona",
@@ -122,7 +122,7 @@
     "name": "Ronaldinho",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "2003-2013",
+    "peak": "2004-2006",
     "clubs": [
       "PSG",
       "Barcellona",
@@ -137,7 +137,7 @@
     "name": "Kaká",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "2003-2013",
+    "peak": "2005-2009",
     "clubs": [
       "San Paolo",
       "Milan",
@@ -152,7 +152,7 @@
     "name": "Neymar",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "2010-2024",
+    "peak": "2015-2018",
     "clubs": [
       "Santos",
       "Barcellona",
@@ -167,7 +167,7 @@
     "name": "Vinícius Júnior",
     "nationality": "Brasile",
     "role": "ATT",
-    "peak": "2018-2026",
+    "peak": "2022-2025",
     "clubs": [
       "Flamengo",
       "Real Madrid"
@@ -180,7 +180,7 @@
     "name": "Cafu",
     "nationality": "Brasile",
     "role": "DIF",
-    "peak": "1988-2002",
+    "peak": "1998-2005",
     "clubs": [
       "Roma",
       "Milan"
@@ -193,7 +193,7 @@
     "name": "Roberto Carlos",
     "nationality": "Brasile",
     "role": "DIF",
-    "peak": "1988-2002",
+    "peak": "1997-2003",
     "clubs": [
       "Inter",
       "Real Madrid"
@@ -206,7 +206,7 @@
     "name": "Alisson Becker",
     "nationality": "Brasile",
     "role": "POR",
-    "peak": "2016-2026",
+    "peak": "2018-2022",
     "clubs": [
       "Roma",
       "Liverpool"
@@ -219,7 +219,7 @@
     "name": "Ederson",
     "nationality": "Brasile",
     "role": "POR",
-    "peak": "2016-2026",
+    "peak": "2018-2023",
     "clubs": [
       "Benfica",
       "Manchester City"
@@ -232,7 +232,7 @@
     "name": "Roberto Baggio",
     "nationality": "Italia",
     "role": "ATT",
-    "peak": "1986-1995",
+    "peak": "1990-1994",
     "clubs": [
       "Fiorentina",
       "Juventus",
@@ -249,7 +249,7 @@
     "name": "Francesco Totti",
     "nationality": "Italia",
     "role": "ATT",
-    "peak": "1995-2007",
+    "peak": "2001-2007",
     "clubs": [
       "Roma"
     ],
@@ -261,7 +261,7 @@
     "name": "Alessandro Del Piero",
     "nationality": "Italia",
     "role": "ATT",
-    "peak": "1995-2007",
+    "peak": "1997-2003",
     "clubs": [
       "Juventus",
       "Sydney FC"
@@ -274,7 +274,7 @@
     "name": "Andrea Pirlo",
     "nationality": "Italia",
     "role": "CEN",
-    "peak": "1998-2009",
+    "peak": "2006-2015",
     "clubs": [
       "Inter",
       "Brescia",
@@ -290,7 +290,7 @@
     "name": "Paolo Maldini",
     "nationality": "Italia",
     "role": "DIF",
-    "peak": "1986-1999",
+    "peak": "1989-1995",
     "clubs": [
       "Milan"
     ],
@@ -302,7 +302,7 @@
     "name": "Fabio Cannavaro",
     "nationality": "Italia",
     "role": "DIF",
-    "peak": "1998-2008",
+    "peak": "2004-2006",
     "clubs": [
       "Napoli",
       "Parma",
@@ -318,7 +318,7 @@
     "name": "Alessandro Nesta",
     "nationality": "Italia",
     "role": "DIF",
-    "peak": "1998-2008",
+    "peak": "2003-2007",
     "clubs": [
       "Lazio",
       "Milan"
@@ -331,7 +331,7 @@
     "name": "Giorgio Chiellini",
     "nationality": "Italia",
     "role": "DIF",
-    "peak": "2008-2018",
+    "peak": "2012-2018",
     "clubs": [
       "Fiorentina",
       "Juventus",
@@ -345,7 +345,7 @@
     "name": "Leonardo Bonucci",
     "nationality": "Italia",
     "role": "DIF",
-    "peak": "2008-2018",
+    "peak": "2015-2021",
     "clubs": [
       "Inter",
       "Bari",
@@ -361,7 +361,7 @@
     "name": "Gianluigi Buffon",
     "nationality": "Italia",
     "role": "POR",
-    "peak": "1999-2018",
+    "peak": "2003-2007",
     "clubs": [
       "Parma",
       "Juventus",
@@ -375,7 +375,7 @@
     "name": "Gianluigi Donnarumma",
     "nationality": "Italia",
     "role": "POR",
-    "peak": "2017-2026",
+    "peak": "2021-2025",
     "clubs": [
       "Milan",
       "PSG",
@@ -389,7 +389,7 @@
     "name": "Thierry Henry",
     "nationality": "Francia",
     "role": "ATT",
-    "peak": "1998-2008",
+    "peak": "2002-2006",
     "clubs": [
       "Monaco",
       "Juventus",
@@ -405,7 +405,7 @@
     "name": "Karim Benzema",
     "nationality": "Francia",
     "role": "ATT",
-    "peak": "2008-2017",
+    "peak": "2019-2022",
     "clubs": [
       "Lione",
       "Real Madrid",
@@ -429,7 +429,7 @@
     "name": "Kylian Mbappé",
     "nationality": "Francia",
     "role": "ATT",
-    "peak": "2016-2026",
+    "peak": "2018-2024",
     "clubs": [
       "Monaco",
       "PSG",
@@ -457,7 +457,7 @@
     "name": "Zinédine Zidane",
     "nationality": "Francia",
     "role": "CEN",
-    "peak": "1997-2007",
+    "peak": "1998-2003",
     "clubs": [
       "Cannes",
       "Bordeaux",
