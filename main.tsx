@@ -1,0 +1,47 @@
+import React,{useEffect,useMemo,useState} from 'react';
+import{createRoot}from'react-dom/client';
+import{ArrowRight,RotateCcw,Trophy,Info,BarChart3,Search,Share2,Check,X,ChevronDown}from'lucide-react';
+import raw from './players.json';
+import './style.css';
+type Difficulty='facile'|'media'|'difficile';
+type Player={id:number;name:string;nationality:string;role:string;peak:string;clubs:string[];clubsVerified?:boolean;difficulty:Difficulty};
+const players=raw as Player[];
+const normalize=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const storeKey='football-guesser-v1';
+type Stats={wins:number;losses:number;games:number;streak:number;best:number;distribution:number[]};
+const initialStats:Stats={wins:0,losses:0,games:0,streak:0,best:0,distribution:Array(8).fill(0)};
+function loadStats():Stats{try{const v=JSON.parse(localStorage.getItem(storeKey)||'null');return v&&Array.isArray(v.distribution)?v:initialStats}catch{return initialStats}}
+function randomPlayer(level:Difficulty,previous?:number){const pool=players.filter(p=>p.difficulty===level&&p.clubsVerified&&p.id!==previous);return pool[Math.floor(Math.random()*pool.length)]??players[0]}
+function overlap(a:string,b:string){const [as,ae]=a.split('-').map(Number),[bs,be]=b.split('-').map(Number);return as<=be&&bs<=ae}
+function peakHint(a:string,b:string){if(overlap(a,b))return 'match';const [as,ae]=a.split('-').map(Number),[bs,be]=b.split('-').map(Number);if(Math.min(Math.abs(as-be),Math.abs(bs-ae))<=5)return 'near';return 'miss'}
+function App(){
+ const [level,setLevel]=useState<Difficulty>('facile');
+ const [target,setTarget]=useState<Player>(()=>randomPlayer('facile'));
+ const [guesses,setGuesses]=useState<Player[]>([]);
+ const [query,setQuery]=useState('');
+ const [menu,setMenu]=useState(false);
+ const [modal,setModal]=useState<'help'|'stats'|null>(null);
+ const [stats,setStats]=useState<Stats>(loadStats);
+ const [recorded,setRecorded]=useState(false);
+ const [copied,setCopied]=useState(false);
+ const won=guesses.some(p=>p.id===target.id);
+ const finished=won||guesses.length>=8;
+ const results=useMemo(()=>players.filter(p=>!guesses.some(g=>g.id===p.id)&&normalize(p.name).includes(normalize(query))).slice(0,8),[query,guesses]);
+ const restart=(difficulty=level)=>{setLevel(difficulty);setTarget(p=>randomPlayer(difficulty,p.id));setGuesses([]);setQuery('');setMenu(false);setRecorded(false);setCopied(false)};
+ const submit=(p:Player)=>{if(finished)return;setGuesses(g=>[...g,p]);setQuery('');setMenu(false)};
+ useEffect(()=>{if(!finished||recorded)return;setRecorded(true);setStats(prev=>{const next={...prev,distribution:[...prev.distribution],games:prev.games+1,wins:prev.wins+(won?1:0),losses:prev.losses+(won?0:1),streak:won?prev.streak+1:0,best:won?Math.max(prev.best,prev.streak+1):prev.best};if(won)next.distribution[guesses.length-1]++;localStorage.setItem(storeKey,JSON.stringify(next));return next})},[finished,won,guesses.length,recorded]);
+ const share=async()=>{const symbols=guesses.map(p=>[p.role===target.role?'🟩':'🟥',(p.clubs.length>0&&target.clubs.length>0&&p.clubs.some(c=>target.clubs.includes(c)))?'🟩':'🟥',p.nationality===target.nationality?'🟩':'🟥',peakHint(p.peak,target.peak)==='match'?'🟩':peakHint(p.peak,target.peak)==='near'?'🟨':'🟥'].join('')).join('\n');const txt=`FOOTBALL GUESSER ⚽ ${level.toUpperCase()} ${won?guesses.length+'/8':'X/8'}\n${symbols}`;try{if(navigator.share)await navigator.share({text:txt});else{await navigator.clipboard.writeText(txt);setCopied(true)}}catch{try{await navigator.clipboard.writeText(txt);setCopied(true)}catch{}}};
+ return <div className="app"><div className="noise"/><header><div className="topline"><span>EST. 1986 — LEGENDS EDITION</span><span>VOL. 01 / 2026</span></div><div className="brand"><div className="ball">⚽</div><div><div className="eyebrow">THE BEAUTIFUL GAME PRESENTS</div><h1>FOOTBALL<br/><em>GUESSER</em></h1></div></div><div className="nav"><button onClick={()=>setModal('help')}><Info size={17}/> REGOLE</button><span className="navtag">500 LEGGENDE • 40 ANNI</span><button onClick={()=>setModal('stats')}><BarChart3 size={17}/> STATS</button></div></header>
+ <main><section className="intro"><span className="kicker">◆ INDOVINA LA LEGGENDA ◆</span><h2>CHI È IL <i>MISTERIOSO?</i></h2><p>Hai <strong>8 tentativi</strong> per indovinare il calciatore. Confronta ruolo, club, nazionalità ed epoca d'oro.</p></section>
+ <div className="difficulty"><span>DIFFICOLTÀ</span><div className="levels">{(['facile','media','difficile'] as const).map(l=><button key={l} className={level===l?'active':''} onClick={()=>restart(l)}>{l.toUpperCase()}</button>)}</div></div>
+ <div className="status"><div><span className="smalllabel">TENTATIVI</span><strong>{String(guesses.length).padStart(2,'0')} <small>/ 08</small></strong></div><div className="ticks">{Array.from({length:8},(_,i)=><span key={i} className={i<guesses.length?'used':''}/>)}</div><button className="new" onClick={()=>restart()} title="Nuova partita"><RotateCcw size={18}/><span>NUOVA</span></button></div>
+ {!finished?<div className="searchArea"><label htmlFor="player">IL TUO PROSSIMO TENTATIVO</label><div className="searchWrap"><Search size={21}/><input id="player" autoComplete="off" placeholder="Cerca un calciatore..." value={query} onChange={e=>{setQuery(e.target.value);setMenu(true)}} onFocus={()=>setMenu(true)} onKeyDown={e=>{if(e.key==='Enter'&&results.length)submit(results[0]);if(e.key==='Escape')setMenu(false)}}/><ChevronDown size={17}/></div>{menu&&query.trim()&&<div className="suggestions">{results.length?results.map(p=><button key={p.id} onClick={()=>submit(p)}><span>{p.name}</span><small>{p.nationality} · {p.role}</small><ArrowRight size={15}/></button>):<div className="noresult">Nessun calciatore trovato. Prova un altro nome.</div>}</div>}</div>:<div className={'outcome '+(won?'victory':'defeat')}><Trophy size={28}/><div><strong>{won?'LEGGENDA INDOVINATA!':'FISCHIO FINALE!'}</strong><p>{won?`Hai trovato ${target.name} in ${guesses.length} tentativi.`:`Il calciatore era ${target.name}.`}</p></div><div className="outcomeButtons"><button onClick={share}><Share2 size={16}/>{copied?'COPIATO':'CONDIVIDI'}</button><button onClick={()=>restart()}><RotateCcw size={16}/>RIGIOCA</button></div></div>}
+ <div className="board"><div className="boardhead"><span>CALCIATORE</span><span>RUOLO</span><span>CLUB</span><span>NAZIONE</span><span>EPOCA</span></div>{guesses.length===0?<div className="empty"><div>★</div><strong>IL CAMPO TI ASPETTA</strong><span>Scrivi un nome per iniziare la partita.</span></div>:guesses.map((p,i)=><div className="guess" key={i}><div className="playername"><small>#{String(i+1).padStart(2,'0')}</small><strong>{p.name}</strong></div><div className={'tile '+(p.role===target.role?'match':'miss')}>{p.role===target.role?<Check size={13}/>:<X size={12}/>}<span>{p.role}</span></div><div className={'tile '+((!p.clubs.length||!target.clubs.length)?'near':p.clubs.some(c=>target.clubs.includes(c))?'match':'miss')}><span>{!p.clubs.length||!target.clubs.length?'N/D':(p.clubs.some(c=>target.clubs.includes(c))?'SÌ':'NO')}</span></div><div className={'tile '+(p.nationality===target.nationality?'match':'miss')}><span>{p.nationality}</span></div><div className={'tile '+peakHint(p.peak,target.peak)}><span>{p.peak}</span></div></div>)}</div>
+ <div className="legend"><span><b className="green"/>CORRETTO</span><span><b className="gold"/>EPOCA VICINA</span><span><b className="red"/>DIVERSO</span></div>
+ <aside><span>⚑</span> <strong>NOTA SUI CLUB:</strong> la casella diventa verde se il calciatore scelto condivide almeno un club con quello misterioso. I club sono liste redazionali individuali. N/D significa dato non ancora verificato: non è un indizio negativo.</aside>
+ </main><footer><div>FOOTBALL GUESSER © 2026</div><div>BUILT FOR THE LOVE OF FOOTBALL ⚽</div></footer>
+ {modal&&<div className="overlay" onClick={()=>setModal(null)}><div className="dialog" onClick={e=>e.stopPropagation()}><button className="close" onClick={()=>setModal(null)}><X/></button>{modal==='help'?<><span className="kicker">MANUALE DEL GIOCATORE</span><h2>COME SI GIOCA</h2><p>Indovina il calciatore misterioso entro 8 tentativi. Puoi cercare fra tutti i 500 giocatori, indipendentemente dalla difficoltà selezionata.</p><p><b>RUOLO:</b> verde se coincide (POR, DIF, CEN, ATT).</p><p><b>CLUB:</b> verde se almeno uno dei club associati ai due giocatori coincide.</p><p><b>NAZIONE:</b> verde se coincide la nazionalità sportiva.</p><p><b>EPOCA:</b> verde se i periodi d'oro si sovrappongono, giallo se distano al massimo 5 anni, rosso altrimenti.</p><p>La difficoltà influenza soltanto la scelta del giocatore misterioso. Cambiare livello avvia una nuova partita.</p></>:<><span className="kicker">IL TUO ALBO D'ORO</span><h2>STATISTICHE</h2><div className="statsgrid">{[['PARTITE',stats.games],['VITTORIE',stats.wins],['SUCCESSO',stats.games?Math.round(stats.wins/stats.games*100)+'%':'0%'],['SERIE RECORD',stats.best]].map(([l,v])=><div key={l}><strong>{v}</strong><small>{l}</small></div>)}</div><h3>VITTORIE PER TENTATIVO</h3>{stats.distribution.map((n,i)=><div className="statrow" key={i}><span>{i+1}</span><div><i style={{width:`${Math.max(5,100*n/Math.max(1,...stats.distribution))}%`}}/></div><b>{n}</b></div>)}</>}</div></div>}
+ </div>
+}
+
+createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
