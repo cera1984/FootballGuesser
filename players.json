@@ -2251,9 +2251,16 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1986-1995",
-    "clubs": [],
+    "clubs": [
+      "Flamengo",
+      "Palmeiras",
+      "Yokohama Flugels",
+      "Gremio",
+      "Cruzeiro",
+      "Miami FC"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 154,
@@ -2261,9 +2268,17 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1995-2006",
-    "clubs": [],
+    "clubs": [
+      "San Paolo",
+      "Middlesbrough",
+      "Atlético Madrid",
+      "Celtic",
+      "Palmeiras",
+      "Flamengo",
+      "Sydney FC"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 155,
@@ -2286,9 +2301,17 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1995-2006",
-    "clubs": [],
+    "clubs": [
+      "Gremio",
+      "Bayer Leverkusen",
+      "Roma",
+      "Juventus",
+      "Real Madrid",
+      "Milan",
+      "Santos"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 157,
@@ -2327,9 +2350,15 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Cruzeiro",
+      "Benfica",
+      "Chelsea",
+      "Jiangsu Suning",
+      "Palmeiras"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 160,
@@ -2351,9 +2380,17 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Vilnius",
+      "Lodz",
+      "Corinthians",
+      "Tottenham",
+      "Guangzhou Evergrande",
+      "Barcellona",
+      "Al Ahli"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 162,
@@ -2361,9 +2398,18 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Corinthians Alagoano",
+      "Hoffenheim",
+      "Bayern Monaco",
+      "Wolfsburg",
+      "Marsiglia",
+      "Fenerbahce",
+      "Al Nassr",
+      "San Paolo"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 163,
@@ -6487,9 +6533,17 @@
     "nationality": "Paesi Bassi",
     "role": "ATT",
     "peak": "1986-1996",
-    "clubs": [],
+    "clubs": [
+      "Den Bosch",
+      "Heerenveen",
+      "PSV",
+      "Manchester United",
+      "Real Madrid",
+      "Amburgo",
+      "Malaga"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 430,
@@ -6497,9 +6551,14 @@
     "nationality": "Paesi Bassi",
     "role": "ATT",
     "peak": "1998-2010",
-    "clubs": [],
+    "clubs": [
+      "Feyenoord",
+      "Arsenal",
+      "Manchester United",
+      "Fenerbahce"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 431,
@@ -6507,9 +6566,14 @@
     "nationality": "Paesi Bassi",
     "role": "ATT",
     "peak": "1998-2010",
-    "clubs": [],
+    "clubs": [
+      "Utrecht",
+      "Feyenoord",
+      "Liverpool",
+      "Fenerbahce"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 432,
@@ -6517,9 +6581,16 @@
     "nationality": "Paesi Bassi",
     "role": "ATT",
     "peak": "2012-2024",
-    "clubs": [],
+    "clubs": [
+      "PSV",
+      "Manchester United",
+      "Lione",
+      "Barcellona",
+      "Atlético Madrid",
+      "Corinthians"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 433,
@@ -6527,9 +6598,12 @@
     "nationality": "Paesi Bassi",
     "role": "ATT",
     "peak": "2012-2024",
-    "clubs": [],
+    "clubs": [
+      "PSV",
+      "Liverpool"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 434,
@@ -6537,9 +6611,14 @@
     "nationality": "Paesi Bassi",
     "role": "ATT",
     "peak": "2012-2024",
-    "clubs": [],
+    "clubs": [
+      "PSV",
+      "Borussia Dortmund",
+      "Aston Villa",
+      "Roma"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 435,
@@ -6547,9 +6626,14 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "1986-1997",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Sporting Lisbona",
+      "Real Saragozza",
+      "Milan"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 436,
@@ -6557,9 +6641,18 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "1986-1997",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Milan",
+      "Juventus",
+      "Barcellona",
+      "Inter",
+      "Tottenham",
+      "Crystal Palace",
+      "Barnet"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 437,
@@ -6583,9 +6676,17 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "1999-2010",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Amburgo",
+      "Real Madrid",
+      "Tottenham",
+      "Real Betis",
+      "Midtjylland",
+      "Esbjerg"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 439,
@@ -6593,9 +6694,15 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "1999-2010",
-    "clubs": [],
+    "clubs": [
+      "Fortuna Sittard",
+      "PSV",
+      "Barcellona",
+      "Bayern Monaco",
+      "Milan"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 440,
@@ -6616,9 +6723,17 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Feyenoord",
+      "PSV",
+      "Newcastle",
+      "Liverpool",
+      "PSG",
+      "Roma",
+      "Al Ettifaq"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 442,
@@ -6626,9 +6741,13 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Bayern Monaco",
+      "Liverpool"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 443,
@@ -6636,9 +6755,14 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "AZ Alkmaar",
+      "RKC Waalwijk",
+      "Milan",
+      "Manchester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 444,
@@ -6646,9 +6770,14 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "PSG",
+      "PSV",
+      "RB Lipsia",
+      "Tottenham"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 445,
@@ -6656,9 +6785,15 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "1986-2000",
-    "clubs": [],
+    "clubs": [
+      "Groningen",
+      "Ajax",
+      "PSV",
+      "Barcellona",
+      "Feyenoord"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 446,
@@ -6666,9 +6801,18 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "1986-2000",
-    "clubs": [],
+    "clubs": [
+      "Zwolle",
+      "Cambuur",
+      "Willem II",
+      "PSV",
+      "Manchester United",
+      "Lazio",
+      "Milan",
+      "Ajax"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 447,
@@ -6676,9 +6820,15 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "1986-2000",
-    "clubs": [],
+    "clubs": [
+      "RKC Waalwijk",
+      "Feyenoord",
+      "Rangers",
+      "Arsenal",
+      "Barcellona"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 448,
@@ -6686,9 +6836,13 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "2005-2017",
-    "clubs": [],
+    "clubs": [
+      "Feyenoord",
+      "Lazio",
+      "Inter"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 449,
@@ -6696,9 +6850,15 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "2005-2017",
-    "clubs": [],
+    "clubs": [
+      "Groningen",
+      "Ajax",
+      "Manchester United",
+      "Bayern Monaco",
+      "Girona"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 450,
@@ -6706,9 +6866,15 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Chelsea",
+      "Reading",
+      "Watford",
+      "Bournemouth",
+      "Manchester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 451,
@@ -6716,9 +6882,14 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Juventus",
+      "Bayern Monaco",
+      "Manchester United"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 452,
@@ -6726,9 +6897,14 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Sparta Rotterdam",
+      "Heerenveen",
+      "PSV",
+      "Inter"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 453,
@@ -6736,9 +6912,12 @@
     "nationality": "Paesi Bassi",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Arsenal"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 454,
@@ -6746,9 +6925,14 @@
     "nationality": "Paesi Bassi",
     "role": "POR",
     "peak": "1995-2010",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Juventus",
+      "Fulham",
+      "Manchester United"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 455,
@@ -6756,9 +6940,16 @@
     "nationality": "Paesi Bassi",
     "role": "POR",
     "peak": "1995-2010",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Roma",
+      "Fulham",
+      "Monaco",
+      "Southampton",
+      "Everton"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 456,
@@ -6766,9 +6957,12 @@
     "nationality": "Paesi Bassi",
     "role": "POR",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Anderlecht",
+      "Brighton"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 457,
@@ -6776,9 +6970,16 @@
     "nationality": "Paesi Bassi",
     "role": "POR",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Alemannia Aachen",
+      "Greuther Furth",
+      "Duisburg",
+      "Friburgo",
+      "Brentford",
+      "Bayer Leverkusen"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 458,
@@ -6805,9 +7006,15 @@
     "nationality": "Belgio",
     "role": "ATT",
     "peak": "2008-2018",
-    "clubs": [],
+    "clubs": [
+      "AGOVV",
+      "Utrecht",
+      "PSV",
+      "Napoli",
+      "Galatasaray"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 460,
@@ -6815,9 +7022,18 @@
     "nationality": "Belgio",
     "role": "ATT",
     "peak": "2008-2018",
-    "clubs": [],
+    "clubs": [
+      "Genk",
+      "Standard Liegi",
+      "Kortrijk",
+      "Mechelen",
+      "Aston Villa",
+      "Liverpool",
+      "Crystal Palace",
+      "DC United"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 461,
@@ -6825,9 +7041,13 @@
     "nationality": "Belgio",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Anderlecht",
+      "Rennes",
+      "Manchester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 462,
@@ -6835,9 +7055,16 @@
     "nationality": "Belgio",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Genk",
+      "Lommel",
+      "Westerlo",
+      "OH Leuven",
+      "Brighton",
+      "Arsenal"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 463,
@@ -6845,9 +7072,15 @@
     "nationality": "Belgio",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Club Brugge",
+      "Vitesse",
+      "Lens",
+      "RB Lipsia",
+      "Juventus"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 464,
@@ -6855,9 +7088,13 @@
     "nationality": "Belgio",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Club Brugge",
+      "Milan",
+      "Atalanta"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 465,
@@ -6865,9 +7102,14 @@
     "nationality": "Belgio",
     "role": "CEN",
     "peak": "2005-2017",
-    "clubs": [],
+    "clubs": [
+      "Standard Liegi",
+      "Everton",
+      "Manchester United",
+      "Shandong Taishan"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 466,
@@ -6875,9 +7117,17 @@
     "nationality": "Belgio",
     "role": "CEN",
     "peak": "2005-2017",
-    "clubs": [],
+    "clubs": [
+      "Standard Liegi",
+      "Benfica",
+      "Zenit",
+      "Tianjin Quanjian",
+      "Borussia Dortmund",
+      "Atlético Madrid",
+      "Girona"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 467,
@@ -6885,9 +7135,15 @@
     "nationality": "Belgio",
     "role": "CEN",
     "peak": "2005-2017",
-    "clubs": [],
+    "clubs": [
+      "Willem II",
+      "AZ Alkmaar",
+      "Fulham",
+      "Tottenham",
+      "Guangzhou R&F"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 468,
@@ -6895,9 +7151,14 @@
     "nationality": "Belgio",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Anderlecht",
+      "Monaco",
+      "Leicester City",
+      "Aston Villa"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 469,
@@ -6905,9 +7166,14 @@
     "nationality": "Belgio",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Amburgo",
+      "Lille",
+      "Everton",
+      "Aston Villa"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 470,
@@ -6915,9 +7181,13 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2008-2018",
-    "clubs": [],
+    "clubs": [
+      "Anderlecht",
+      "Amburgo",
+      "Manchester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 471,
@@ -6925,9 +7195,15 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2008-2018",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "RKC Waalwijk",
+      "Tottenham",
+      "Benfica",
+      "Anderlecht"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 472,
@@ -6935,9 +7211,16 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2008-2018",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Atlético Madrid",
+      "Southampton",
+      "Tottenham",
+      "Al Duhail",
+      "Anversa"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 473,
@@ -6945,9 +7228,16 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2008-2018",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "RKC Waalwijk",
+      "Arsenal",
+      "Barcellona",
+      "Roma",
+      "Vissel Kobe"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 474,
@@ -6955,9 +7245,16 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Anderlecht",
+      "Heerenveen",
+      "Excelsior",
+      "Oostende",
+      "Reims",
+      "Leicester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 475,
@@ -6965,9 +7262,14 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Oostende",
+      "Bologna",
+      "Rennes",
+      "Eintracht Francoforte"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 476,
@@ -6975,9 +7277,14 @@
     "nationality": "Belgio",
     "role": "DIF",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Genk",
+      "Atalanta",
+      "Leicester City",
+      "Fulham"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 477,
@@ -6985,9 +7292,15 @@
     "nationality": "Belgio",
     "role": "POR",
     "peak": "2013-2026",
-    "clubs": [],
+    "clubs": [
+      "Genk",
+      "Hoffenheim",
+      "Werder Brema",
+      "Wolfsburg",
+      "Al Qadsiah"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 478,
@@ -6995,9 +7308,18 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Osijek",
+      "Dinamo Zagabria",
+      "Siviglia",
+      "Real Madrid",
+      "Arsenal",
+      "West Ham",
+      "Monaco",
+      "Monaco 1860"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 479,
@@ -7005,9 +7327,18 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Hertha Berlino",
+      "Zagabria",
+      "Dinamo Zagabria",
+      "CSKA Mosca",
+      "Amburgo",
+      "Bayern Monaco",
+      "Wolfsburg",
+      "Monaco 1860"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 480,
@@ -7015,9 +7346,17 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Inter Zapresic",
+      "Arsenal",
+      "Shakhtar Donetsk",
+      "Flamengo",
+      "Atletico Paranaense",
+      "Legia Varsavia"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 481,
@@ -7025,9 +7364,18 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Zagabria",
+      "Dinamo Zagabria",
+      "Wolfsburg",
+      "Bayern Monaco",
+      "Atlético Madrid",
+      "Juventus",
+      "Al Duhail",
+      "Milan"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 482,
@@ -7035,9 +7383,15 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Lokomotiva Zagabria",
+      "Rijeka",
+      "Leicester City",
+      "Hoffenheim"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 483,
@@ -7045,9 +7399,17 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Fiorentina",
+      "RB Lipsia",
+      "Verona",
+      "Eintracht Francoforte",
+      "Milan",
+      "Besiktas",
+      "Lecce"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 484,
@@ -7055,9 +7417,20 @@
     "nationality": "Croazia",
     "role": "ATT",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Sochaux",
+      "Roeselare",
+      "Club Brugge",
+      "Borussia Dortmund",
+      "Wolfsburg",
+      "Inter",
+      "Bayern Monaco",
+      "Tottenham",
+      "Hajduk Spalato",
+      "PSV"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 485,
@@ -7065,9 +7438,14 @@
     "nationality": "Croazia",
     "role": "CEN",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Bari",
+      "Milan",
+      "Celta Vigo"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 486,
@@ -7075,9 +7453,18 @@
     "nationality": "Croazia",
     "role": "CEN",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Hajduk Spalato",
+      "Portsmouth",
+      "Tottenham",
+      "Dinamo Kiev",
+      "Queens Park Rangers",
+      "New York Cosmos",
+      "Rangers"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 487,
@@ -7101,9 +7488,15 @@
     "nationality": "Croazia",
     "role": "CEN",
     "peak": "2008-2022",
-    "clubs": [],
+    "clubs": [
+      "Dragovoljac",
+      "Lokomotiva Zagabria",
+      "Dinamo Zagabria",
+      "Inter",
+      "Al Nassr"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 489,
@@ -7111,9 +7504,15 @@
     "nationality": "Croazia",
     "role": "CEN",
     "peak": "2008-2022",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Inter",
+      "Real Madrid",
+      "Chelsea",
+      "Manchester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 490,
@@ -7121,9 +7520,14 @@
     "nationality": "Croazia",
     "role": "CEN",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Lokomotiva Zagabria",
+      "Dinamo Zagabria",
+      "Rennes",
+      "Wolfsburg"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 491,
@@ -7131,9 +7535,13 @@
     "nationality": "Croazia",
     "role": "CEN",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Liefering",
+      "Red Bull Salisburgo",
+      "Real Sociedad"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 492,
@@ -7141,9 +7549,16 @@
     "nationality": "Croazia",
     "role": "DIF",
     "peak": "1998-2010",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Inter Zapresic",
+      "Manchester City",
+      "Tottenham",
+      "Bayer Leverkusen",
+      "Lokomotiv Mosca"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 493,
@@ -7151,9 +7566,14 @@
     "nationality": "Croazia",
     "role": "DIF",
     "peak": "1998-2010",
-    "clubs": [],
+    "clubs": [
+      "Amburgo",
+      "Hertha Berlino",
+      "Hoffenheim",
+      "Dinamo Zagabria"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 494,
@@ -7161,9 +7581,13 @@
     "nationality": "Croazia",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "RB Lipsia",
+      "Manchester City"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 495,
@@ -7171,9 +7595,12 @@
     "nationality": "Croazia",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Bayern Monaco",
+      "Bayer Leverkusen"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 496,
@@ -7181,9 +7608,17 @@
     "nationality": "Croazia",
     "role": "DIF",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Dinamo Zagabria",
+      "Inter Zapresic",
+      "Lione",
+      "Southampton",
+      "Liverpool",
+      "Zenit",
+      "PAOK"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 497,
@@ -7191,9 +7626,14 @@
     "nationality": "Croazia",
     "role": "POR",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Zagabria",
+      "Dinamo Zagabria",
+      "Fenerbahce",
+      "Girona"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 498,
@@ -7201,9 +7641,20 @@
     "nationality": "Uruguay",
     "role": "ATT",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Independiente",
+      "Manchester United",
+      "Villarreal",
+      "Atlético Madrid",
+      "Inter",
+      "Internacional",
+      "Cerezo Osaka",
+      "Penarol",
+      "Mumbai City",
+      "Kitchee"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 499,
@@ -7211,9 +7662,16 @@
     "nationality": "Uruguay",
     "role": "ATT",
     "peak": "1995-2007",
-    "clubs": [],
+    "clubs": [
+      "Inter",
+      "Venezia",
+      "Torino",
+      "Panionios",
+      "Danubio",
+      "Nacional"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 500,
@@ -7221,8 +7679,18 @@
     "nationality": "Uruguay",
     "role": "ATT",
     "peak": "2007-2020",
-    "clubs": [],
+    "clubs": [
+      "Danubio",
+      "Bella Vista",
+      "Reggina",
+      "Albacete",
+      "Levante",
+      "Racing Santander",
+      "Espanyol",
+      "Middlesbrough",
+      "Girona"
+    ],
     "difficulty": "difficile",
-    "clubsVerified": false
+    "clubsVerified": true
   }
 ]
