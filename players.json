@@ -420,9 +420,14 @@
     "nationality": "Francia",
     "role": "ATT",
     "peak": "2008-2017",
-    "clubs": [],
+    "clubs": [
+      "Bayern Monaco",
+      "Marsiglia",
+      "Fiorentina",
+      "Salernitana"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 31,
@@ -489,9 +494,13 @@
     "nationality": "Francia",
     "role": "CEN",
     "peak": "2007-2017",
-    "clubs": [],
+    "clubs": [
+      "Juventus",
+      "Manchester United",
+      "Monaco"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 36,
@@ -601,9 +610,12 @@
     "nationality": "Spagna",
     "role": "CEN",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Barcellona",
+      "Las Palmas"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 44,
@@ -780,9 +792,13 @@
     "nationality": "Inghilterra",
     "role": "ATT",
     "peak": "2010-2020",
-    "clubs": [],
+    "clubs": [
+      "Manchester United",
+      "Aston Villa",
+      "Barcellona"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 57,
@@ -858,9 +874,11 @@
     "nationality": "Inghilterra",
     "role": "CEN",
     "peak": "1998-2010",
-    "clubs": [],
+    "clubs": [
+      "Manchester United"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 63,
@@ -910,9 +928,12 @@
     "nationality": "Inghilterra",
     "role": "DIF",
     "peak": "2010-2020",
-    "clubs": [],
+    "clubs": [
+      "Liverpool",
+      "Real Madrid"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 67,
@@ -965,9 +986,16 @@
     "nationality": "Paesi Bassi",
     "role": "CEN",
     "peak": "1986-1997",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Sampdoria",
+      "Real Madrid",
+      "Inter",
+      "Milan",
+      "Botafogo"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 71,
@@ -1021,9 +1049,14 @@
     "nationality": "Belgio",
     "role": "POR",
     "peak": "2013-2026",
-    "clubs": [],
+    "clubs": [
+      "Genk",
+      "Atlético Madrid",
+      "Chelsea",
+      "Real Madrid"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 75,
@@ -1081,9 +1114,16 @@
     "nationality": "Cile",
     "role": "ATT",
     "peak": "1998-2008",
-    "clubs": [],
+    "clubs": [
+      "Udinese",
+      "Barcellona",
+      "Arsenal",
+      "Manchester United",
+      "Inter",
+      "Marsiglia"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 79,
@@ -1091,9 +1131,17 @@
     "nationality": "Cile",
     "role": "CEN",
     "peak": "2005-2020",
-    "clubs": [],
+    "clubs": [
+      "Bayer Leverkusen",
+      "Juventus",
+      "Bayern Monaco",
+      "Barcellona",
+      "Inter",
+      "Flamengo",
+      "Colo-Colo"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 80,
@@ -1101,9 +1149,13 @@
     "nationality": "USA",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Borussia Dortmund",
+      "Chelsea",
+      "Milan"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 81,
@@ -1111,9 +1163,15 @@
     "nationality": "Danimarca",
     "role": "CEN",
     "peak": "2013-2026",
-    "clubs": [],
+    "clubs": [
+      "Ajax",
+      "Tottenham",
+      "Inter",
+      "Brentford",
+      "Manchester United"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 82,
@@ -1171,9 +1229,12 @@
     "nationality": "Slovenia",
     "role": "POR",
     "peak": "2013-2026",
-    "clubs": [],
+    "clubs": [
+      "Benfica",
+      "Atlético Madrid"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 86,
@@ -1181,9 +1242,14 @@
     "nationality": "Georgia",
     "role": "ATT",
     "peak": "2022-2026",
-    "clubs": [],
+    "clubs": [
+      "Rubin Kazan",
+      "Dinamo Batumi",
+      "Napoli",
+      "PSG"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 87,
@@ -1207,9 +1273,14 @@
     "nationality": "Marocco",
     "role": "DIF",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Real Madrid",
+      "Borussia Dortmund",
+      "Inter",
+      "PSG"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 89,
@@ -1234,9 +1305,14 @@
     "nationality": "Costa d'Avorio",
     "role": "ATT",
     "peak": "2005-2015",
-    "clubs": [],
+    "clubs": [
+      "Marsiglia",
+      "Chelsea",
+      "Galatasaray",
+      "Montréal Impact"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 91,
@@ -1244,9 +1320,14 @@
     "nationality": "Costa d'Avorio",
     "role": "CEN",
     "peak": "2007-2017",
-    "clubs": [],
+    "clubs": [
+      "Monaco",
+      "Barcellona",
+      "Manchester City",
+      "Olympiacos"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 92,
@@ -1254,9 +1335,14 @@
     "nationality": "Nigeria",
     "role": "ATT",
     "peak": "2017-2026",
-    "clubs": [],
+    "clubs": [
+      "Lille",
+      "Napoli",
+      "Galatasaray",
+      "Wolfsburg"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 93,
@@ -1264,9 +1350,18 @@
     "nationality": "Camerun",
     "role": "ATT",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Real Madrid",
+      "Maiorca",
+      "Barcellona",
+      "Inter",
+      "Chelsea",
+      "Everton",
+      "Sampdoria",
+      "Antalyaspor"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 94,
@@ -1289,9 +1384,12 @@
     "nationality": "Canada",
     "role": "ATT",
     "peak": "2019-2026",
-    "clubs": [],
+    "clubs": [
+      "Vancouver Whitecaps",
+      "Bayern Monaco"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 96,
@@ -1299,9 +1397,14 @@
     "nationality": "Galles",
     "role": "ATT",
     "peak": "2012-2022",
-    "clubs": [],
+    "clubs": [
+      "Southampton",
+      "Tottenham",
+      "Real Madrid",
+      "Los Angeles FC"
+    ],
     "difficulty": "facile",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 97,
@@ -1309,9 +1412,16 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "1986-1994",
-    "clubs": [],
+    "clubs": [
+      "River Plate",
+      "Atalanta",
+      "Roma",
+      "Benfica",
+      "Rangers",
+      "Dundee"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 98,
@@ -1332,9 +1442,14 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Udinese",
+      "Roma",
+      "Parma",
+      "Fiorentina"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 100,
@@ -1342,9 +1457,16 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Parma",
+      "Lazio",
+      "Inter",
+      "Chelsea",
+      "Milan",
+      "Genoa"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 101,
@@ -1352,9 +1474,17 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Sampdoria",
+      "Parma",
+      "Lazio",
+      "Manchester United",
+      "Chelsea",
+      "Inter",
+      "Estudiantes"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 102,
@@ -1377,9 +1507,13 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "2004-2014",
-    "clubs": [],
+    "clubs": [
+      "Napoli",
+      "PSG",
+      "Hebei China Fortune"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 104,
@@ -1418,9 +1552,14 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "2014-2023",
-    "clubs": [],
+    "clubs": [
+      "Sampdoria",
+      "Inter",
+      "PSG",
+      "Galatasaray"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 107,
@@ -1428,9 +1567,12 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "2014-2023",
-    "clubs": [],
+    "clubs": [
+      "Atlético Madrid",
+      "Tigres UANL"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 108,
@@ -1465,9 +1607,12 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "2020-2026",
-    "clubs": [],
+    "clubs": [
+      "Manchester United",
+      "Chelsea"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 111,
@@ -1475,9 +1620,14 @@
     "nationality": "Argentina",
     "role": "ATT",
     "peak": "2020-2026",
-    "clubs": [],
+    "clubs": [
+      "Stoccarda",
+      "Fiorentina",
+      "Juventus",
+      "Atlético Madrid"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 112,
@@ -1485,9 +1635,14 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Valencia",
+      "Real Saragozza",
+      "Benfica",
+      "River Plate"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 113,
@@ -1495,9 +1650,14 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Real Madrid",
+      "Inter",
+      "Leicester City",
+      "Olympiacos"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 114,
@@ -1505,9 +1665,13 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Boca Juniors",
+      "Barcellona",
+      "Villarreal"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 115,
@@ -1515,9 +1679,14 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "1995-2005",
-    "clubs": [],
+    "clubs": [
+      "Espanyol",
+      "Atlético Madrid",
+      "Liverpool",
+      "Newell's Old Boys"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 116,
@@ -1525,9 +1694,16 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2005-2015",
-    "clubs": [],
+    "clubs": [
+      "River Plate",
+      "Corinthians",
+      "West Ham",
+      "Liverpool",
+      "Barcellona",
+      "Hebei China Fortune"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 117,
@@ -1535,9 +1711,16 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2005-2015",
-    "clubs": [],
+    "clubs": [
+      "Valencia",
+      "Atlético Madrid",
+      "Newell's Old Boys",
+      "Siviglia",
+      "Inter",
+      "Al Shabab"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 118,
@@ -1545,9 +1728,14 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2005-2015",
-    "clubs": [],
+    "clubs": [
+      "Anderlecht",
+      "Lazio",
+      "Milan",
+      "Istanbul Basaksehir"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 119,
@@ -1555,9 +1743,15 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2005-2015",
-    "clubs": [],
+    "clubs": [
+      "Real Madrid",
+      "Roma",
+      "Valencia",
+      "Boca Juniors",
+      "Vélez Sarsfield"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 120,
@@ -1565,9 +1759,14 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Argentinos Juniors",
+      "Boca Juniors",
+      "Brighton",
+      "Liverpool"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 121,
@@ -1575,9 +1774,13 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "River Plate",
+      "Benfica",
+      "Chelsea"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 122,
@@ -1585,9 +1788,13 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Valencia",
+      "Udinese",
+      "Atlético Madrid"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 123,
@@ -1595,9 +1802,16 @@
     "nationality": "Argentina",
     "role": "CEN",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Roma",
+      "Empoli",
+      "Zenit",
+      "PSG",
+      "Juventus",
+      "Boca Juniors"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 124,
@@ -1631,9 +1845,14 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "1990-2005",
-    "clubs": [],
+    "clubs": [
+      "Napoli",
+      "Milan",
+      "Valencia",
+      "Real Saragozza"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 127,
@@ -1641,9 +1860,16 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "1990-2005",
-    "clubs": [],
+    "clubs": [
+      "Paris Saint-Germain",
+      "Manchester United",
+      "Real Madrid",
+      "Marsiglia",
+      "Roma",
+      "Newell's Old Boys"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 128,
@@ -1651,9 +1877,14 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Porto",
+      "Valencia",
+      "Manchester City",
+      "Benfica"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 129,
@@ -1661,9 +1892,14 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Spartak Mosca",
+      "Sporting Lisbona",
+      "Manchester United",
+      "Boca Juniors"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 130,
@@ -1671,9 +1907,13 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Espanyol",
+      "Manchester City",
+      "West Ham"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 131,
@@ -1681,9 +1921,15 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Bayern Monaco",
+      "Malaga",
+      "Atlético Madrid",
+      "Manchester City",
+      "Espanyol"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 132,
@@ -1691,9 +1937,14 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Genoa",
+      "Atalanta",
+      "Juventus",
+      "Tottenham"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 133,
@@ -1701,9 +1952,13 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Defensa y Justicia",
+      "Ajax",
+      "Manchester United"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 134,
@@ -1711,9 +1966,12 @@
     "nationality": "Argentina",
     "role": "DIF",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Udinese",
+      "Atlético Madrid"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 135,
@@ -1721,9 +1979,16 @@
     "nationality": "Argentina",
     "role": "POR",
     "peak": "1995-2010",
-    "clubs": [],
+    "clubs": [
+      "AZ Alkmaar",
+      "Sampdoria",
+      "Monaco",
+      "Manchester United",
+      "Venezia",
+      "Boca Juniors"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 136,
@@ -1731,9 +1996,13 @@
     "nationality": "Argentina",
     "role": "POR",
     "peak": "1995-2010",
-    "clubs": [],
+    "clubs": [
+      "Boca Juniors",
+      "Getafe",
+      "Internacional"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 137,
@@ -1741,9 +2010,13 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "1986-1995",
-    "clubs": [],
+    "clubs": [
+      "Flamengo",
+      "Deportivo La Coruña",
+      "Vasco da Gama"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 138,
@@ -1751,9 +2024,14 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "1986-1995",
-    "clubs": [],
+    "clubs": [
+      "Guarani",
+      "San Paolo",
+      "Napoli",
+      "Kashiwa Reysol"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 139,
@@ -1775,9 +2053,16 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2003-2013",
-    "clubs": [],
+    "clubs": [
+      "Santos",
+      "Real Madrid",
+      "Manchester City",
+      "Milan",
+      "Guangzhou Evergrande",
+      "Atletico Mineiro"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 141,
@@ -1785,9 +2070,18 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2003-2013",
-    "clubs": [],
+    "clubs": [
+      "Internacional",
+      "Milan",
+      "Corinthians",
+      "San Paolo",
+      "Chelsea",
+      "Villarreal",
+      "Tianjin Tianhai",
+      "Orlando City"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 142,
@@ -1795,9 +2089,14 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2010-2024",
-    "clubs": [],
+    "clubs": [
+      "Porto",
+      "Zenit",
+      "Shanghai SIPG",
+      "Atletico Mineiro"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 143,
@@ -1805,9 +2104,14 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2010-2024",
-    "clubs": [],
+    "clubs": [
+      "Internacional",
+      "Chelsea",
+      "Shanghai Port",
+      "San Paolo"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 144,
@@ -1815,9 +2119,16 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2010-2024",
-    "clubs": [],
+    "clubs": [
+      "Shakhtar Donetsk",
+      "Anzhi",
+      "Chelsea",
+      "Arsenal",
+      "Fulham",
+      "Olympiacos"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 145,
@@ -1825,9 +2136,13 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2010-2024",
-    "clubs": [],
+    "clubs": [
+      "San Paolo",
+      "PSG",
+      "Tottenham"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 146,
@@ -1848,9 +2163,13 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Palmeiras",
+      "Manchester City",
+      "Arsenal"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 148,
@@ -1871,9 +2190,14 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Fluminense",
+      "Watford",
+      "Everton",
+      "Tottenham"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 150,
@@ -1881,9 +2205,14 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "San Paolo",
+      "Ajax",
+      "Manchester United",
+      "Real Betis"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 151,
@@ -1891,9 +2220,13 @@
     "nationality": "Brasile",
     "role": "ATT",
     "peak": "2018-2026",
-    "clubs": [],
+    "clubs": [
+      "Palmeiras",
+      "Real Madrid",
+      "Lione"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 152,
@@ -1901,9 +2234,16 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1986-1995",
-    "clubs": [],
+    "clubs": [
+      "Fiorentina",
+      "Pescara",
+      "Pisa",
+      "Stoccarda",
+      "Jubilo Iwata",
+      "Internacional"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 153,
@@ -1931,9 +2271,14 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1995-2006",
-    "clubs": [],
+    "clubs": [
+      "Vasco da Gama",
+      "Lione",
+      "Al Gharafa",
+      "New York Red Bulls"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 156,
@@ -1951,9 +2296,14 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1995-2006",
-    "clubs": [],
+    "clubs": [
+      "Atletico Mineiro",
+      "Arsenal",
+      "Panathinaikos",
+      "Gremio"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 158,
@@ -1961,9 +2311,15 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "1995-2006",
-    "clubs": [],
+    "clubs": [
+      "Real Madrid",
+      "Bayer Leverkusen",
+      "Bayern Monaco",
+      "Amburgo",
+      "Palmeiras"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 159,
@@ -1981,9 +2337,13 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2006-2016",
-    "clubs": [],
+    "clubs": [
+      "Shakhtar Donetsk",
+      "Manchester City",
+      "Athletico Paranaense"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 161,
@@ -2024,9 +2384,15 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Rio Ave",
+      "Real Madrid",
+      "Monaco",
+      "Liverpool",
+      "Al Ittihad"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 165,
@@ -2034,9 +2400,13 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Athletico Paranaense",
+      "Lione",
+      "Newcastle"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 166,
@@ -2044,9 +2414,14 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Flamengo",
+      "Milan",
+      "Lione",
+      "West Ham"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 167,
@@ -2054,9 +2429,14 @@
     "nationality": "Brasile",
     "role": "CEN",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Sport Recife",
+      "Hoffenheim",
+      "Rapid Vienna",
+      "Newcastle"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 168,
@@ -2064,9 +2444,13 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "1988-2002",
-    "clubs": [],
+    "clubs": [
+      "Benfica",
+      "Roma",
+      "Genoa"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 169,
@@ -2074,9 +2458,16 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "1988-2002",
-    "clubs": [],
+    "clubs": [
+      "Bayer Leverkusen",
+      "Bayern Monaco",
+      "Inter",
+      "Juventus",
+      "San Paolo",
+      "Palmeiras"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 170,
@@ -2099,9 +2490,16 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2003-2014",
-    "clubs": [],
+    "clubs": [
+      "Benfica",
+      "Chelsea",
+      "PSG",
+      "Arsenal",
+      "Flamengo",
+      "Fortaleza"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 172,
@@ -2138,9 +2536,15 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2003-2014",
-    "clubs": [],
+    "clubs": [
+      "Cruzeiro",
+      "Monaco",
+      "Inter",
+      "Manchester City",
+      "Roma"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 175,
@@ -2148,9 +2552,13 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2003-2014",
-    "clubs": [],
+    "clubs": [
+      "Porto",
+      "Juventus",
+      "Flamengo"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 176,
@@ -2158,9 +2566,13 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Corinthians",
+      "Roma",
+      "PSG"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 177,
@@ -2168,9 +2580,13 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "San Paolo",
+      "Porto",
+      "Real Madrid"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 178,
@@ -2178,9 +2594,12 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Lille",
+      "Arsenal"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 179,
@@ -2188,9 +2607,13 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Atletico Mineiro",
+      "Torino",
+      "Juventus"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 180,
@@ -2198,9 +2621,16 @@
     "nationality": "Brasile",
     "role": "DIF",
     "peak": "2015-2026",
-    "clubs": [],
+    "clubs": [
+      "Santos",
+      "Porto",
+      "Real Madrid",
+      "Manchester City",
+      "Juventus",
+      "Flamengo"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 181,
@@ -2208,9 +2638,14 @@
     "nationality": "Brasile",
     "role": "POR",
     "peak": "1994-2006",
-    "clubs": [],
+    "clubs": [
+      "Cruzeiro",
+      "Corinthians",
+      "Milan",
+      "Internacional"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 182,
@@ -2218,9 +2653,15 @@
     "nationality": "Brasile",
     "role": "POR",
     "peak": "1994-2006",
-    "clubs": [],
+    "clubs": [
+      "Flamengo",
+      "Inter",
+      "Queens Park Rangers",
+      "Toronto FC",
+      "Benfica"
+    ],
     "difficulty": "media",
-    "clubsVerified": false
+    "clubsVerified": true
   },
   {
     "id": 183,
