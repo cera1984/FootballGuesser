@@ -1,4 +1,6 @@
-import {clubHint, peakCentre, peakDirection, peakHint} from './game.ts';
+import {peakCentre, peakDirection, peakHint} from './game.ts';
+import {CLUBS, clubPlayers, clueClubHint, isClub} from './clubs.ts';
+import type {ClubMode} from './clubs.ts';
 import type {Difficulty, Player} from './game.ts';
 
 // Keep this catalog and its comparison rules available for already-shared links.
@@ -6,9 +8,10 @@ export const CATALOG_ID = 'L1';
 export const THEMES = {
   all: 'Tutte le epoche', classic: 'Fino al 1999', millennium: 'Anni 2000', modern: 'Dal 2010',
 } as const;
-export type Theme = keyof typeof THEMES;
+export type Theme = keyof typeof THEMES | ClubMode;
+export const themeLabel = (theme: Theme) => isClub(theme) ? `Modalità ${CLUBS[theme].name} · dal 1995` : THEMES[theme];
 export type Challenge = {catalog: string; level: Difficulty; theme: Theme; seed: number};
-const levelCodes = {facile: 'f', media: 'm', difficile: 'd'} as const;
+const levelCodes = {facile: 'f', media: 'm', difficile: 'd', tutti: 'a'} as const;
 const themeCodes = {all: 'a', classic: 'c', millennium: 'y', modern: 'n'} as const;
 const UINT_MAX = 0xffffffff;
 export const LAUNCH_DATE = '2026-10-22';
@@ -20,6 +23,8 @@ export function hash(value: string) {
 }
 
 export function challengePool(players: Player[], level: Difficulty, theme: Theme) {
+  if (isClub(theme)) return clubPlayers(players, theme).filter(player => level === 'tutti' || player.difficulty === level)
+    .sort((a, b) => hash(`C1:${theme}:${a.id}`) - hash(`C1:${theme}:${b.id}`) || a.id - b.id);
   return players.filter(player => player.difficulty === level && player.clubs.length > 0
     && (theme === 'all' || (theme === 'classic' ? peakCentre(player.peak) < 2000
       : theme === 'millennium' ? peakCentre(player.peak) >= 2000 && peakCentre(player.peak) < 2010
@@ -28,12 +33,20 @@ export function challengePool(players: Player[], level: Difficulty, theme: Theme
 }
 
 export function encodeChallenge(spec: Challenge) {
-  if (spec.catalog !== CATALOG_ID || !Object.hasOwn(levelCodes, spec.level) || !Object.hasOwn(themeCodes, spec.theme)
+  if (spec.catalog !== CATALOG_ID || !Object.hasOwn(levelCodes, spec.level) || (!Object.hasOwn(themeCodes, spec.theme) && !isClub(spec.theme))
+    || (!isClub(spec.theme) && spec.level === 'tutti')
     || !Number.isInteger(spec.seed) || spec.seed < 0 || spec.seed > UINT_MAX) throw new Error('Sfida non valida');
-  return `fg1.${spec.catalog}.${levelCodes[spec.level]}.${themeCodes[spec.theme]}.${spec.seed.toString(36)}`;
+  if (isClub(spec.theme)) return `fg2.C1.${spec.theme}.${levelCodes[spec.level]}.${spec.seed.toString(36)}`;
+  return `fg1.${spec.catalog}.${levelCodes[spec.level]}.${themeCodes[spec.theme as keyof typeof themeCodes]}.${spec.seed.toString(36)}`;
 }
 
 export function decodeChallenge(value: string): Challenge | null {
+  const club = /^fg2\.C1\.(milan|inter|juventus|napoli)\.([fmda])\.([0-9a-z]{1,7})$/.exec(value);
+  if (club) {
+    const spec: Challenge = {catalog: CATALOG_ID, theme: club[1] as ClubMode,
+      level: ({f: 'facile', m: 'media', d: 'difficile', a: 'tutti'} as const)[club[2] as 'f' | 'm' | 'd' | 'a'], seed: parseInt(club[3], 36)};
+    return spec.seed <= UINT_MAX && encodeChallenge(spec) === value ? spec : null;
+  }
   const match = /^fg1\.(L1)\.([fmd])\.([acyn])\.([0-9a-z]{1,7})$/.exec(value);
   if (!match) return null;
   const spec = {catalog: match[1], level: ({f: 'facile', m: 'media', d: 'difficile'} as const)[match[2] as 'f' | 'm' | 'd'],
@@ -49,8 +62,8 @@ export function challengeTarget(players: Player[], spec: Challenge) {
   return pool[spec.seed % pool.length];
 }
 
-export function seedForPlayer(players: Player[], player: Player, theme: Theme, random: () => number) {
-  const pool = challengePool(players, player.difficulty, theme);
+export function seedForPlayer(players: Player[], player: Player, theme: Theme, random: () => number, level = player.difficulty) {
+  const pool = challengePool(players, level, theme);
   const index = pool.findIndex(candidate => candidate.id === player.id);
   if (index < 0) throw new Error('Calciatore fuori dal gruppo della sfida');
   const bucket = Math.min(Math.floor((random() >>> 0) / pool.length), Math.floor((UINT_MAX - index) / pool.length));
@@ -110,11 +123,11 @@ export function resultText(board: ShareBoard, players: Player[], base: string) {
   const rows = board.guessIds.map(id => {
     const guess = players.find(player => player.id === id);
     if (!guess) throw new Error('Tentativo non valido');
-    const club = clubHint(guess, target), peak = peakHint(guess.peak, target.peak);
+    const club = clueClubHint(guess, target, board.spec.theme), peak = peakHint(guess.peak, target.peak);
     return [guess.role === target.role ? '🟩' : '🟥', club === 'match' ? '🟩' : club === 'unknown' ? '⬜' : '🟥',
       guess.nationality === target.nationality ? '🟩' : '🟥',
       (peak === 'match' ? '🟩' : peak === 'near' ? '🟨' : '🟥') + peakDirection(guess.peak, target.peak).trim()].join('');
   });
   const label = board.date ? `Del giorno · ${board.date}` : 'Sfida tra amici';
-  return `FOOTBALL GUESSER ⚽\n${label} · ${board.spec.level.toUpperCase()} · ${THEMES[board.spec.theme]}\n${won ? board.guessIds.length : 'X'}/8 · ${board.hintUsed ? 'con indizio' : 'senza aiuti'}\n${rows.join('\n')}\nRiesci a fare meglio? Gioca la stessa sfida:\n${challengeUrl(base, board.spec, board.date)}`;
+  return `FOOTBALL GUESSER ⚽\n${label} · ${board.spec.level.toUpperCase()} · ${themeLabel(board.spec.theme)}\n${won ? board.guessIds.length : 'X'}/8 · ${board.hintUsed ? 'con indizio' : 'senza aiuti'}\n${rows.join('\n')}\nRiesci a fare meglio? Gioca la stessa sfida:\n${challengeUrl(base, board.spec, board.date)}`;
 }

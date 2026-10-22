@@ -2,11 +2,13 @@ import {addGuess, datasetVersion, isFinished, parseStats} from './game.ts';
 import type {Difficulty, Player, Progress, Stats} from './game.ts';
 import {CATALOG_ID, challengePool, challengeTarget, dailyChallenge, decodeChallenge, encodeChallenge, seedForPlayer, validDate} from './challenges.ts';
 import type {Challenge, Entry, Theme} from './challenges.ts';
+import {clubPlayers, isClub, modeOf} from './clubs.ts';
 import {loadProgress} from './storage.ts';
 
 export type Board = {key: string; kind: 'free' | 'daily' | 'friend'; spec: Challenge;
   targetId: number; guessIds: number[]; hintUsed: boolean; date?: string};
 export type Session = {version: string; active: string; free: Board; boards: Record<string, Board>;
+  parked?: Record<string, {board: Board; history: number[]}>;
   history: number[]; stats: Stats; onboardingDone: boolean};
 type StorageAccess = Pick<Storage, 'getItem' | 'setItem'>;
 export const sessionKey = 'football-guesser-v3';
@@ -34,6 +36,7 @@ function replaceBoard(session: Session, board: Board): Session {
 }
 export function guessInSession(session: Session, id: number, players: Player[]) {
   const board = currentBoard(session);
+  if (isClub(board.spec.theme) && !clubPlayers(players, board.spec.theme).some(p => p.id === id)) return session;
   const previous = asProgress(session, board);
   const next = addGuess(previous, id, players);
   if (next === previous) return session;
@@ -56,7 +59,7 @@ export function nextFree(session: Session, players: Player[], level: Difficulty,
     available = pool.filter(player => !history.includes(player.id));
   }
   const target = available[(random() >>> 0) % available.length];
-  const spec = {catalog: CATALOG_ID, level, theme, seed: seedForPlayer(players, target, theme, random)};
+  const spec = {catalog: CATALOG_ID, level, theme, seed: seedForPlayer(players, target, theme, random, level)};
   const free: Board = {key: 'free', kind: 'free', spec, targetId: target.id, guessIds: [], hintUsed: false};
   const abandoned = session.free.guessIds.length > 0 && !complete(session.free);
   return {...session, active: 'free', free, history: [...history.filter(id => id !== target.id), target.id],
@@ -70,6 +73,16 @@ export function migrateProgress(progress: Progress, players: Player[], random: (
   return {version: progress.version, active: 'free',
     free: {key: 'free', kind: 'free', spec, targetId: target.id, guessIds: [...progress.guessIds], hintUsed: false},
     boards: {}, history: [...progress.recentIds], stats: progress.stats, onboardingDone: false};
+}
+
+export function switchMode(session: Session, players: Player[], theme: Theme, random: () => number): Session {
+  if (modeOf(session.free.spec.theme) === modeOf(theme)) return {...session, active: 'free'};
+  const parked = {...session.parked};
+  parked[modeOf(session.free.spec.theme)] = {board: session.free, history: session.history};
+  const destination = parked[modeOf(theme)];
+  delete parked[modeOf(theme)];
+  if (destination) return {...session, active: 'free', free: destination.board, history: destination.history, parked};
+  return nextFree({...session, parked, history: [], free: {...session.free, guessIds: []}}, players, isClub(theme) ? 'tutti' : 'facile', theme, random);
 }
 
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -108,9 +121,21 @@ export function restoreSession(value: unknown, players: Player[], version: strin
     boards[key] = board;
   }
   if (value.active !== 'free' && !boards[value.active]) return null;
-  const pending = [free, ...Object.values(boards)].filter(board => board.guessIds.length > 0 && !complete(board)).length;
+  const parked: NonNullable<Session['parked']> = {};
+  if (value.parked !== undefined) {
+    if (!record(value.parked)) return null;
+    for (const [mode, slot] of Object.entries(value.parked)) {
+      if ((mode !== 'world' && !isClub(mode)) || mode === modeOf(free.spec.theme) || !record(slot)) return null;
+      const board = restoreBoard(slot.board, 'free', players);
+      if (!board || modeOf(board.spec.theme) !== mode || !Array.isArray(slot.history)
+        || new Set(slot.history).size !== slot.history.length || slot.history.at(-1) !== board.targetId
+        || !slot.history.every(id => players.some(p => p.id === id))) return null;
+      parked[mode] = {board, history: [...slot.history]};
+    }
+  }
+  const pending = [free, ...Object.values(parked).map(slot => slot.board), ...Object.values(boards)].filter(board => board.guessIds.length > 0 && !complete(board)).length;
   if (stats.started !== stats.games + stats.abandoned + pending) return null;
-  return {version, active: value.active, free, boards, stats, history: [...value.history], onboardingDone: value.onboardingDone};
+  return {version, active: value.active, free, boards, stats, history: [...value.history], onboardingDone: value.onboardingDone, ...(value.parked !== undefined ? {parked} : {})};
 }
 
 export function loadSession(storage: StorageAccess, players: Player[], random: () => number): Session {

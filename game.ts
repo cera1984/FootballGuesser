@@ -1,4 +1,4 @@
-export type Difficulty = 'facile' | 'media' | 'difficile';
+export type Difficulty = 'facile' | 'media' | 'difficile' | 'tutti';
 export type Player = {
   id: number;
   name: string;

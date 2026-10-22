@@ -56,6 +56,8 @@ Per nuove correzioni va creato un nuovo catalogo/versione, mantenendo il caricam
 
 ## Validazione
 
+Le modalità Milan, Inter, Juventus e Napoli includono una selezione dal 1995, palette dedicate, livello Tutti e progressi separati. Criteri, limiti del database e protocollo dei nuovi link sono documentati in [CLUB_MODES.md](CLUB_MODES.md). Non modificare la selezione C1 dopo la pubblicazione.
+
 ```bash
 python scripts/validate_players.py
 npm test
