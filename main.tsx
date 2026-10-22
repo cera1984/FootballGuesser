@@ -1,164 +1,127 @@
-import React, {useEffect, useMemo, useReducer, useRef, useState} from 'react';
+import {StrictMode, useEffect, useReducer, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {ArrowRight, RotateCcw, Trophy, Info, BarChart3, Search, Share2, Check, X, ChevronDown} from 'lucide-react';
-import raw from './players.json';
-import {addGuess, clubHint, commonClubs, datasetVersion, isFinished, peakDirection, peakHint,
-  pickPlayer, restartProgress, searchPlayers} from './game.ts';
-import type {Difficulty, Player, Progress} from './game.ts';
-import {loadProgress, saveProgress} from './storage.ts';
+import {BarChart3, CalendarDays, Flag, Info, Lightbulb, RotateCcw, Share2, Trophy, X} from 'lucide-react';
+import catalog from './catalogs/L1.json';
+import {clubHint, commonClubs, peakDirection, peakHint} from './game.ts';
+import type {Difficulty, Player} from './game.ts';
+import {CATALOG_ID, LAUNCH_DATE, THEMES, challengePool, challengeUrl, dailyChallenge, encodeChallenge, readEntry, resultText, romeDate} from './challenges.ts';
+import type {Entry, Theme} from './challenges.ts';
+import {boardFinished, currentBoard, guessInSession, hintAvailable, loadSession, nextFree, openEntry, saveSession, useHint} from './session.ts';
+import type {Session} from './session.ts';
+import {HelpExample} from './components/HelpExample';
+import {Modal} from './components/Modal';
+import {PlayerSearch} from './components/PlayerSearch';
+import {ReportPanel} from './components/ReportPanel';
+import {SharePanel} from './components/SharePanel';
 import './style.css';
 
-const players = raw as Player[];
-const version = datasetVersion(players);
-// Access storage inside the guarded read/write functions: even the browser getter can throw.
-const storage = {
-  getItem: (key: string) => window.localStorage.getItem(key),
-  setItem: (key: string, value: string) => window.localStorage.setItem(key, value),
-};
-type Action = {type: 'guess'; playerId: number} | {type: 'restart'; target: Player};
-const reducer = (state: Progress, action: Action) => action.type === 'guess'
-  ? addGuess(state, action.playerId, players) : restartProgress(state, action.target);
+const players = catalog as Player[];
+const storage = {getItem: (key: string) => window.localStorage.getItem(key), setItem: (key: string, value: string) => window.localStorage.setItem(key, value)};
+const random = () => crypto.getRandomValues(new Uint32Array(1))[0];
+const baseUrl = () => `${window.location.origin}${window.location.pathname}`;
+const initialRoute = readEntry(window.location.href, romeDate());
+type Action = {type: 'guess'; id: number} | {type: 'open'; entry: Entry | null}
+  | {type: 'new'; level: Difficulty; theme: Theme; entropy: number[]} | {type: 'hint'} | {type: 'learned'};
+function reducer(session: Session, action: Action): Session {
+  if (action.type === 'guess') return guessInSession(session, action.id, players);
+  if (action.type === 'open') return openEntry(session, players, action.entry);
+  if (action.type === 'hint') return useHint(session);
+  if (action.type === 'learned') return {...session, onboardingDone: true};
+  let index = 0;
+  return nextFree(session, players, action.level, action.theme, () => action.entropy[index++]);
+}
 
 function App() {
-  const [progress, dispatch] = useReducer(reducer, undefined, () => loadProgress(storage, players, version));
-  const {level, stats} = progress;
-  const target = players.find(player => player.id === progress.targetId)!;
-  const guesses = progress.guessIds.map(id => players.find(player => player.id === id)!);
-  const [query, setQuery] = useState('');
-  const [menu, setMenu] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const [modal, setModal] = useState<'help' | 'stats' | 'restart' | null>(null);
-  const [pendingLevel, setPendingLevel] = useState<Difficulty>('facile');
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
-  const [copied, setCopied] = useState(false);
-  const [saved, setSaved] = useState(true);
-  const [shareError, setShareError] = useState(false);
-  const won = progress.guessIds.includes(target.id);
-  const finished = isFinished(progress);
-  const results = useMemo(() => searchPlayers(players, query, progress.guessIds), [query, progress.guessIds]);
-  const showSuggestions = menu && query.trim().length > 0;
-  const compatible = !won && guesses.length > 0 && (() => {
-    const guess = guesses.at(-1)!;
-    return guess.role === target.role && guess.nationality === target.nationality
-      && clubHint(guess, target) === 'match' && peakHint(guess.peak, target.peak) === 'match';
-  })();
-
-  useEffect(() => { setSaved(saveProgress(storage, progress)); }, [progress]);
+  const [session, dispatch] = useReducer(reducer, undefined, () => openEntry(loadSession(storage, players, random), players, initialRoute.entry));
+  const board = currentBoard(session), {stats} = session;
+  const target = players.find(player => player.id === board.targetId)!;
+  const guesses = board.guessIds.map(id => players.find(player => player.id === id)!);
+  const finished = boardFinished(board), won = board.guessIds.includes(board.targetId);
+  const [modal, setModal] = useState<'help' | 'stats' | 'restart' | 'share' | 'report' | 'archive' | null>(null);
+  const [pending, setPending] = useState({level: board.spec.level, theme: board.spec.theme});
+  const [saved, setSaved] = useState(true), [routeError, setRouteError] = useState(initialRoute.error);
+  const [today, setToday] = useState(romeDate), [archiveDate, setArchiveDate] = useState(romeDate);
+  useEffect(() => { setSaved(saveSession(storage, session)); }, [session]);
   useEffect(() => {
-    if (showSuggestions && activeIndex >= 0) {
-      resultsRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({block: 'nearest'});
-    }
-  }, [activeIndex, showSuggestions]);
-  useEffect(() => {
-    if (!modal) return;
-    const previousFocus = document.activeElement;
-    const dialog = dialogRef.current;
-    dialog?.querySelector<HTMLButtonElement>('button')?.focus();
-    const close = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setModal(null);
-      if (event.key !== 'Tab' || !dialog) return;
-      const controls = [...dialog.querySelectorAll<HTMLButtonElement>('button')];
-      const first = controls[0], last = controls.at(-1);
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
-    };
-    window.addEventListener('keydown', close);
-    return () => {
-      window.removeEventListener('keydown', close);
-      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus();
-    };
-  }, [modal]);
+    const timer = window.setInterval(() => setToday(romeDate()), 60000);
+    const onBack = () => { const route = readEntry(window.location.href, romeDate()); dispatch({type: 'open', entry: route.entry}); setRouteError(route.error); setModal(null); };
+    window.addEventListener('popstate', onBack);
+    return () => { window.clearInterval(timer); window.removeEventListener('popstate', onBack); };
+  }, []);
 
-  const performRestart = (difficulty: Difficulty) => {
-    dispatch({type: 'restart', target: pickPlayer(players, difficulty, progress.recentIds)});
-    setQuery(''); setMenu(false); setActiveIndex(-1); setCopied(false); setShareError(false);
-    setModal(null);
+  const navigate = (entry: Entry | null) => {
+    const url = entry ? challengeUrl(baseUrl(), entry.spec, entry.kind === 'daily' ? entry.date : undefined) : baseUrl();
+    if (url !== window.location.href) window.history.pushState(null, '', url);
+    dispatch({type: 'open', entry}); setRouteError(null); setModal(null);
   };
-  const restart = (difficulty = level) => {
-    if (guesses.length > 0 && !finished) { setPendingLevel(difficulty); setModal('restart'); }
-    else performRestart(difficulty);
+  const performNew = (level: Difficulty, theme: Theme) => {
+    dispatch({type: 'new', level, theme, entropy: [random(), random()]});
+    if (window.location.search) window.history.pushState(null, '', baseUrl());
+    setModal(null); setRouteError(null);
   };
-  const submit = (player: Player) => {
-    if (finished) return;
-    dispatch({type: 'guess', playerId: player.id});
-    setQuery(''); setMenu(false); setActiveIndex(-1);
+  const requestNew = (level = board.spec.level, theme = board.spec.theme) => {
+    if (board.kind !== 'free') { navigate(null); return; }
+    if (guesses.length > 0 && !finished) { setPending({level, theme}); setModal('restart'); }
+    else performNew(level, theme);
   };
-  const onSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.nativeEvent.isComposing) return;
-    if (event.key === 'Escape') { setMenu(false); setActiveIndex(-1); return; }
-    if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && results.length) {
-      event.preventDefault(); setMenu(true);
-      setActiveIndex(index => !menu || index < 0
-        ? event.key === 'ArrowDown' ? 0 : results.length - 1
-        : (index + (event.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length);
-    }
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      if (showSuggestions && activeIndex >= 0 && results[activeIndex]) submit(results[activeIndex]);
-    }
+  const openDay = (date: string) => {
+    const currentDay = romeDate();
+    setToday(currentDay);
+    const route = readEntry(challengeUrl(baseUrl(), dailyChallenge(date), date), currentDay);
+    if (route.error) { setRouteError(route.error); return; }
+    navigate(route.entry);
   };
-  const share = async () => {
-    const symbols = guesses.map(player => [player.role === target.role ? '🟩' : '🟥',
-      clubHint(player, target) === 'match' ? '🟩' : clubHint(player, target) === 'unknown' ? '⬜' : '🟥',
-      player.nationality === target.nationality ? '🟩' : '🟥',
-      (peakHint(player.peak, target.peak) === 'match' ? '🟩' : peakHint(player.peak, target.peak) === 'near' ? '🟨' : '🟥')
-        + peakDirection(player.peak, target.peak).trim()].join('')).join('\n');
-    const text = `FOOTBALL GUESSER ⚽ ${level.toUpperCase()} ${won ? guesses.length + '/8' : 'X/8'}\n${symbols}`;
-    setShareError(false);
-    try {
-      if (navigator.share) await navigator.share({text});
-      else { await navigator.clipboard.writeText(text); setCopied(true); }
-    } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') return;
-      try { await navigator.clipboard.writeText(text); setCopied(true); } catch { setShareError(true); }
-    }
-  };
+  const link = challengeUrl(baseUrl(), board.spec, board.date);
+  const shareBody = finished ? resultText(board, players, baseUrl())
+    : `FOOTBALL GUESSER ⚽\n${board.date ? 'Del giorno · ' + board.date : 'Sfida tra amici'} · ${board.spec.level.toUpperCase()} · ${THEMES[board.spec.theme]}\nHai 8 tentativi. Proviamo la stessa leggenda?\n${link}`;
+  const reportPlayers = [...new Map([...guesses, ...(finished ? [target] : [])].map(player => [player.id, player])).values()];
+  const last = guesses.at(-1);
+  const compatible = !won && last && last.role === target.role && last.nationality === target.nationality
+    && clubHint(last, target) === 'match' && peakHint(last.peak, target.peak) === 'match';
+  const modeLabel = board.kind === 'free' ? 'Partite libere, senza limiti' : board.kind === 'daily' ? `Del giorno · ${board.date}` : 'Sfida ricevuta da un amico';
 
   return <div className="app"><div className="noise"/>
-    <header>
-      <div className="topline"><span>EST. 1986 — LEGENDS EDITION</span><span>VOL. 01 / 2026</span></div>
-      <div className="brand"><div className="ball">⚽</div><div><div className="eyebrow">THE BEAUTIFUL GAME PRESENTS</div><h1>FOOTBALL<br/><em>GUESSER</em></h1></div></div>
-      <div className="nav"><button onClick={() => setModal('help')}><Info size={17}/> REGOLE</button><span className="navtag">500 LEGGENDE • 40 ANNI</span><button onClick={() => setModal('stats')}><BarChart3 size={17}/> STATS</button></div>
+    <header className="compactHeader"><div className="brand"><span className="ball" aria-hidden="true">⚽</span><div><div className="eyebrow">LEGENDS EDITION</div><h1>FOOTBALL <em>GUESSER</em></h1></div></div>
+      <nav className="headerActions" aria-label="Informazioni"><button aria-label="Come si gioca" onClick={() => setModal('help')}><Info size={19}/><span>REGOLE</span></button><button aria-label="Statistiche" onClick={() => setModal('stats')}><BarChart3 size={19}/><span>STATS</span></button></nav>
     </header>
     <main>
-      <section className="intro"><span className="kicker">◆ INDOVINA LA LEGGENDA ◆</span><h2>CHI È IL <i>MISTERIOSO?</i></h2><p>Hai <strong>8 tentativi</strong> per indovinare il calciatore. Confronta ruolo, club, nazionalità ed epoca d'oro.</p></section>
-      <div className="difficulty"><span>DIFFICOLTÀ</span><div className="levels">{(['facile', 'media', 'difficile'] as const).map(l => <button key={l} className={level === l ? 'active' : ''} aria-pressed={level === l} onClick={() => { if (l !== level) restart(l); }}>{l.toUpperCase()}</button>)}</div></div>
-      <div className="status"><div><span className="smalllabel">TENTATIVI</span><strong>{String(guesses.length).padStart(2, '0')} <small>/ 08</small></strong></div><div className="ticks">{Array.from({length: 8}, (_, i) => <span key={i} className={i < guesses.length ? 'used' : ''}/>)}</div><button className="new" onClick={() => restart()} title="Nuova partita"><RotateCcw size={18}/><span>NUOVA</span></button></div>
-      {!saved && <p className="notice" role="status">Il browser non consente il salvataggio: la partita resterà disponibile solo in questa pagina.</p>}
-      {!finished ? <div className="searchArea">
-        <label htmlFor="player">IL TUO PROSSIMO TENTATIVO</label>
-        <div className="searchControl"><div className="searchWrap"><Search size={21}/><input id="player" role="combobox" aria-autocomplete="list" aria-expanded={showSuggestions} aria-controls="player-results" aria-activedescendant={showSuggestions && results[activeIndex] ? `player-option-${results[activeIndex].id}` : undefined} aria-describedby="search-help" autoComplete="off" placeholder="Cerca un calciatore..." value={query}
-          onChange={event => { setQuery(event.target.value); setMenu(true); setActiveIndex(-1); }}
-          onFocus={() => setMenu(true)} onBlur={() => { setMenu(false); setActiveIndex(-1); }} onKeyDown={onSearchKeyDown}/><ChevronDown size={17}/></div>
-        <div className="srOnly" role="status" aria-live="polite">{showSuggestions ? `${results.length} risultati mostrati. Usa le frecce per selezionare un calciatore.` : ''}</div>
-        {showSuggestions && <div className="suggestions" ref={resultsRef} id="player-results" role="listbox" aria-label="Calciatori trovati">{results.length ? results.map((player, index) => <button type="button" role="option" aria-selected={activeIndex === index} id={`player-option-${player.id}`} tabIndex={-1} key={player.id} onMouseDown={event => event.preventDefault()} onMouseMove={() => setActiveIndex(index)} onClick={() => submit(player)}><span>{player.name}</span><small>{player.nationality} · {player.role}</small><ArrowRight size={15}/></button>) : <div className="noresult">Nessun calciatore trovato. Prova un altro nome.</div>}</div>}</div>
-        <p id="search-help" className="searchHelp">Scegli un nome oppure usa ↑ e ↓, poi Invio per confermare.</p>
-      </div> : <div className={'outcome ' + (won ? 'victory' : 'defeat')} role="status"><Trophy size={28}/><div><strong>{won ? 'LEGGENDA INDOVINATA!' : 'FISCHIO FINALE!'}</strong><p>{won ? `Hai trovato ${target.name} in ${guesses.length} tentativi.` : `Il calciatore era ${target.name}.`}</p></div><div className="outcomeButtons"><button onClick={share}><Share2 size={16}/>{copied ? 'COPIATO' : 'CONDIVIDI'}</button><button onClick={() => restart()}><RotateCcw size={16}/>RIGIOCA</button></div></div>}
-      {shareError && <p className="notice" role="status">Condivisione non disponibile in questo browser. Puoi salvare una schermata del risultato.</p>}
+      <section className="intro"><span className="kicker">500 LEGGENDE · UNA PARTITA TIRA L’ALTRA</span><h2>INDOVINA. <i>RIGIOCA. SFIDA.</i></h2><p>8 tentativi, quattro indizi. Trova la leggenda e manda la stessa sfida ai tuoi amici.</p></section>
+      <div className="modeTabs" aria-label="Modalità"><button aria-pressed={board.kind === 'free'} onClick={() => navigate(null)}>PARTITE LIBERE <small>senza limiti</small></button><button aria-pressed={board.kind === 'daily'} onClick={() => openDay(romeDate())}><CalendarDays size={17}/>DEL GIORNO</button></div>
+      <div className="modeDescription"><span>{modeLabel}</span>{board.kind === 'daily' ? <button onClick={() => setModal('archive')}>ARCHIVIO</button> : board.kind === 'friend' ? <span className="challengeBadge">STESSA SFIDA, IL TUO RISULTATO</span> : <span>NESSUNA RIPETIZIONE FINO A FINE GRUPPO</span>}</div>
+      {routeError && <div className="notice" role="status">{routeError}<button aria-label="Chiudi avviso" onClick={() => setRouteError(null)}><X size={15}/></button></div>}
+      {!session.onboardingDone && <section className="welcomeStrip" aria-label="Benvenuto"><p><strong>Il primo tentativo ti dà la direzione.</strong> Verde: compatibile. Giallo: epoca vicina. Le frecce ti guidano nel tempo.</p><div><button onClick={() => setModal('help')}>VEDI UN ESEMPIO</button><button onClick={() => dispatch({type: 'learned'})}>HO CAPITO</button></div></section>}
+      {board.kind === 'free' ? <div className="gameFilters"><div className="levels" aria-label="Difficoltà">{(['facile', 'media', 'difficile'] as const).map(level => <button key={level} aria-pressed={level === board.spec.level} className={level === board.spec.level ? 'active' : ''} onClick={() => { if (level !== board.spec.level) requestNew(level); }}>{level.toUpperCase()}</button>)}</div><label htmlFor="theme" className="srOnly">Epoca della partita</label><select id="theme" value={board.spec.theme} onChange={event => requestNew(board.spec.level, event.target.value as Theme)}>{Object.entries(THEMES).map(([theme, label]) => <option key={theme} value={theme} disabled={!challengePool(players, board.spec.level, theme as Theme).length}>{label}</option>)}</select></div>
+        : <div className="lockedFilters"><strong>{board.spec.level.toUpperCase()}</strong><span>{THEMES[board.spec.theme]}</span><span>Condizioni uguali per tutti</span></div>}
+      <div className="status"><div><span className="smalllabel">TENTATIVI</span><strong>{String(guesses.length).padStart(2, '0')} <small>/ 08</small></strong></div><div className="ticks">{Array.from({length: 8}, (_, index) => <span key={index} className={index < guesses.length ? 'used' : ''}/>)}</div>{board.kind === 'free' && <button className="new" onClick={() => requestNew()} aria-label="Nuova partita libera"><RotateCcw size={18}/><span>NUOVA</span></button>}</div>
+      {!saved && <p className="notice" role="status">Salvataggio non disponibile in questo browser. La partita resterà in questa pagina; il link della sfida funziona comunque.</p>}
+      {!finished ? <><PlayerSearch key={board.key + encodeChallenge(board.spec)} players={players} guessedIds={board.guessIds} onGuess={player => dispatch({type: 'guess', id: player.id})}/><div className="gameTools"><button onClick={() => setModal('share')}><Share2 size={15}/>SFIDA UN AMICO</button><button disabled={!hintAvailable(session) || board.hintUsed} onClick={() => dispatch({type: 'hint'})}><Lightbulb size={15}/>{board.hintUsed ? 'INDIZIO USATO' : guesses.length < 3 ? 'INDIZIO DAL 3° TENTATIVO' : 'SVELA NAZIONALITÀ'}</button></div></>
+        : <section className={'outcome ' + (won ? 'victory' : 'defeat')} aria-label="Risultato"><Trophy size={28}/><div><strong>{won ? 'LEGGENDA INDOVINATA!' : 'FISCHIO FINALE!'}</strong><p>{won ? `${target.name}, in ${guesses.length} tentativi.` : `Il misterioso era ${target.name}.`} {board.hintUsed ? 'Con indizio.' : 'Senza aiuti.'}</p></div><div className="outcomeButtons"><button onClick={() => setModal('share')}><Share2 size={16}/>CONDIVIDI E SFIDA</button><button onClick={() => board.kind === 'free' ? requestNew() : navigate(null)}><RotateCcw size={16}/>{board.kind === 'free' ? 'ALTRA PARTITA' : 'CONTINUA IN LIBERA'}</button></div></section>}
+      {board.hintUsed && <p className="notice" role="status"><Lightbulb size={16}/> Indizio: la nazionalità del misterioso è <strong>{target.nationality}</strong>. Il risultato condiviso indicherà l’aiuto usato.</p>}
       {compatible && <p className="notice" role="status">Tutti gli indizi sono compatibili, ma il giocatore è diverso. Prova un altro nome.</p>}
-      <div className="board"><div className="boardhead"><span>CALCIATORE</span><span>RUOLO</span><span>CLUB</span><span>NAZIONE</span><span>EPOCA</span></div>
-        {guesses.length === 0 ? <div className="empty"><div>★</div><strong>IL CAMPO TI ASPETTA</strong><span>Scrivi un nome per iniziare la partita.</span></div> : guesses.map((player, index) => <div className="guess" key={player.id}>
-          <div className="playername"><small>#{String(index + 1).padStart(2, '0')}</small><strong>{player.name}</strong></div>
-          <div className={'tile ' + (player.role === target.role ? 'match' : 'miss')}>{player.role === target.role ? <Check size={13}/> : <X size={12}/>}<span>{player.role}</span></div>
-          <div className={'tile ' + clubHint(player, target)}><span>{clubHint(player, target) === 'unknown' ? 'N/D' : clubHint(player, target) === 'match' ? 'SÌ' : 'NO'}</span></div>
+      <div className="board"><div className="boardhead"><span>CALCIATORE</span><span>RUOLO</span><span>CLUB</span><span>NAZIONE</span><span>EPOCA</span></div>{!guesses.length ? <div className="empty"><strong>IL CAMPO TI ASPETTA</strong><span>Parti da un nome che conosci. Ogni tentativo restringe la ricerca.</span></div> : guesses.map((player, index) => {
+        const clubs = commonClubs(player, target), club = clubHint(player, target);
+        return <div className="guess" key={player.id}><div className="playername"><small>#{String(index + 1).padStart(2, '0')}</small><strong>{player.name}</strong></div>
+          <div className={'tile ' + (player.role === target.role ? 'match' : 'miss')}><span>{player.role}</span></div>
+          <div className={'tile ' + club} title={club === 'unknown' ? 'Lista dei club mancante' : `${clubs.length} club in comune nelle liste`}><span>{club === 'unknown' ? 'N/D' : clubs.length ? `${clubs.length} CLUB` : 'NO'}</span></div>
           <div className={'tile ' + (player.nationality === target.nationality ? 'match' : 'miss')}><span>{player.nationality}</span></div>
-          <div className={'tile ' + peakHint(player.peak, target.peak)}><span>{player.peak}{peakDirection(player.peak, target.peak)}</span></div>
-        </div>)}
-      </div>
+          <div className={'tile ' + peakHint(player.peak, target.peak)}><span>{player.peak}{peakDirection(player.peak, target.peak)}</span></div></div>;
+      })}</div>
       <div className="legend"><span><b className="green"/>COMPATIBILE</span><span><b className="gold"/>EPOCA VICINA</span><span><b className="red"/>DIVERSO</span></div>
-      {finished && <section className="reveal" aria-label="Scheda del calciatore misterioso"><h3>{target.name}</h3><p>{target.nationality} · {target.role} · Epoca: {target.peak}</p><p><strong>Club nel gioco:</strong> {target.clubs.join(', ') || 'N/D'}</p><details><summary>Rivedi i club condivisi nei tuoi tentativi</summary><ul>{guesses.map(player => <li key={player.id}><strong>{player.name}:</strong> {clubHint(player, target) === 'unknown' ? 'dato mancante' : commonClubs(player, target).join(', ') || 'nessun club comune nelle liste'}</li>)}</ul></details></section>}
-      <aside><span>⚑</span> <strong>NOTA SUI CLUB:</strong> verde indica almeno un club comune nelle liste del gioco. Le carriere sono ancora in revisione: rosso significa nessuna corrispondenza nelle liste, che possono essere incomplete; N/D indica un dato mancante. Le epoche sono stime editoriali. Quattro indizi verdi non garantiscono che il nome sia quello giusto.</aside>
+      {finished && <section className="reveal" aria-label="Scheda del misterioso"><h3>{target.name}</h3><p>{target.nationality} · {target.role} · Epoca: {target.peak}</p><p><strong>Club nelle liste:</strong> {target.clubs.join(', ')}</p><details><summary>Perché gli indizi erano questi?</summary><ul>{guesses.map(player => <li key={player.id}><strong>{player.name}:</strong> {commonClubs(player, target).join(', ') || 'nessun club in comune nelle liste'}</li>)}</ul></details></section>}
+      <div className="boardFooter"><button disabled={!reportPlayers.length} onClick={() => setModal('report')}><Flag size={14}/>SEGNALA UN DATO DA CORREGGERE</button><button onClick={() => setModal('help')}>COME LEGGERE GLI INDIZI</button></div>
+      <aside>Le liste dei club e le epoche sono editoriali, ancora in revisione. Il numero nella casella CLUB indica quanti club sono condivisi nelle liste, anche in anni diversi. Le partite per epoca usano il centro del periodo indicato.</aside>
+      {board.kind === 'daily' && <p className="dailyNote">Una nuova leggenda ogni giorno a mezzanotte, ora di Roma. Nel frattempo, le partite libere continuano senza limiti.</p>}
     </main>
-    <footer><div>FOOTBALL GUESSER © 2026</div><div>BUILT FOR THE LOVE OF FOOTBALL ⚽</div></footer>
-    {modal && <div className="overlay" onClick={() => setModal(null)}><div className="dialog" ref={dialogRef} role={modal === 'restart' ? 'alertdialog' : 'dialog'} aria-modal="true" aria-labelledby="dialog-title" onClick={event => event.stopPropagation()}><button className="close" aria-label="Chiudi" onClick={() => setModal(null)}><X/></button>
-      {modal === 'restart' ? <><span className="kicker">PARTITA IN CORSO</span><h2 id="dialog-title">ABBANDONARE LA PARTITA?</h2><p>I tentativi saranno cancellati e la partita verrà conteggiata come abbandonata. La serie di vittorie si interromperà.</p><div className="confirmButtons"><button onClick={() => setModal(null)}>ANNULLA</button><button onClick={() => performRestart(pendingLevel)}>ABBANDONA E CONTINUA</button></div></> : modal === 'help' ? <><span className="kicker">MANUALE DEL GIOCATORE</span><h2 id="dialog-title">COME SI GIOCA</h2><p>Indovina il calciatore misterioso entro 8 tentativi. Puoi cercare fra tutti i 500 giocatori, indipendentemente dalla difficoltà selezionata.</p><p><b>RUOLO:</b> verde se coincide (POR, DIF, CEN, ATT).</p><p><b>CLUB:</b> verde se almeno uno dei club nelle due liste coincide. Le liste editoriali possono essere incomplete.</p><p><b>NAZIONE:</b> verde se coincide la nazionalità sportiva.</p><p><b>EPOCA:</b> verde se i centri dei periodi d'oro distano al massimo 2 anni; giallo se distano più di 2 e fino a 6 anni; rosso oltre 6. La freccia ↑ indica che il misterioso è più recente, ↓ che è precedente.</p><p>I colori confrontano gli attributi: per vincere devi trovare esattamente il calciatore misterioso.</p><p>La difficoltà influenza soltanto la scelta del misterioso. Cambiare livello avvia una nuova partita; il livello già attivo non la riavvia. Il browser salva automaticamente la partita. Le ultime 20 risposte vengono escluse dal sorteggio quando il pool lo consente.</p></> : <><span className="kicker">IL TUO ALBO D'ORO</span><h2 id="dialog-title">STATISTICHE</h2>
-        <div className="statsgrid">{[['COMPLETATE', stats.games], ['VITTORIE', stats.wins], ['SUCCESSO', stats.started ? Math.round(stats.wins / stats.started * 100) + '%' : '0%'], ['SERIE RECORD', stats.best]].map(([label, value]) => <div key={label}><strong>{value}</strong><small>{label}</small></div>)}</div>
-        <p>Iniziate: <b>{stats.started}</b> · Abbandonate: <b>{stats.abandoned}</b>. Il successo considera tutte le partite iniziate con almeno un tentativo, inclusa quella in corso. Gli abbandoni interrompono la serie.</p><p>Le statistiche precedenti sono conservate; gli abbandoni passati non erano registrati.</p>
-        <h3>VITTORIE PER TENTATIVO</h3>{stats.distribution.map((n, index) => <div className="statrow" key={index}><span>{index + 1}</span><div><i style={{width: `${100 * n / Math.max(1, ...stats.distribution)}%`}}/></div><b>{n}</b></div>)}
-      </>}
-    </div></div>}
+    <footer><div>FOOTBALL GUESSER © 2026</div><div>FATTO PER CHI AMA IL CALCIO ⚽</div></footer>
+    {modal && <Modal title={{help: 'COME SI GIOCA', stats: 'LE TUE PARTITE', restart: 'ABBANDONARE LA PARTITA?', share: finished ? 'IL RISULTATO DIVENTA UNA SFIDA' : 'GIOCATE LA STESSA LEGGENDA', report: 'SEGNALA UN DATO', archive: 'ARCHIVIO DEL GIORNO'}[modal]} onClose={() => setModal(null)} alert={modal === 'restart'}>
+      {modal === 'share' && <SharePanel text={shareBody} link={link} result={finished}/>}
+      {modal === 'help' && <><p>Hai 8 tentativi. Puoi cercare tutti i 500 nomi, anche di difficoltà diverse.</p><HelpExample/><p><strong>Epoca:</strong> si confrontano i centri dei periodi: verde entro 2 anni; giallo oltre 2 e fino a 6; rosso oltre 6. ↑ significa più recente, ↓ precedente.</p><p><strong>Libera:</strong> scegli difficoltà ed epoca e continua a giocare. Le risposte si ripetono solo dopo aver esaurito il gruppo. <strong>Del giorno:</strong> una sfida comune, salvata separatamente. Le partite degli amici hanno un link che fissa risposta e condizioni.</p><p>Dopo tre tentativi puoi svelare la nazionalità. Il risultato condiviso indica se hai usato l’indizio.</p><button className="primaryButton" onClick={() => { dispatch({type: 'learned'}); setModal(null); }}>ENTRA IN CAMPO</button></>}
+      {modal === 'restart' && <><p>I tentativi di questa partita libera verranno cancellati e sarà registrato un abbandono. Le altre sfide salvate resteranno disponibili.</p><div className="confirmButtons"><button onClick={() => setModal(null)}>ANNULLA</button><button onClick={() => performNew(pending.level, pending.theme)}>ABBANDONA E CONTINUA</button></div></>}
+      {modal === 'archive' && <><p>Riprendi una leggenda del giorno dalla data di lancio. Riaprire la stessa sfida conserva il risultato e non aggiunge una nuova partita alle statistiche.</p><label className="fieldLabel" htmlFor="archive-date">DATA</label><input id="archive-date" type="date" min={LAUNCH_DATE} max={today} value={archiveDate} onChange={event => setArchiveDate(event.target.value)}/><button className="primaryButton" disabled={!archiveDate || archiveDate < LAUNCH_DATE || archiveDate > today} onClick={() => openDay(archiveDate)}>APRI LA SFIDA</button></>}
+      {modal === 'report' && <ReportPanel players={reportPlayers} version={`${CATALOG_ID} · ${session.version}`}/>}
+      {modal === 'stats' && <><div className="statsgrid">{[['COMPLETATE', stats.games], ['VITTORIE', stats.wins], ['SUCCESSO', stats.started ? Math.round(stats.wins / stats.started * 100) + '%' : '0%'], ['SERIE RECORD', stats.best]].map(([label, value]) => <div key={label}><strong>{value}</strong><small>{label}</small></div>)}</div><p>Iniziate: <b>{stats.started}</b> · Abbandonate: <b>{stats.abandoned}</b> · In corso o in pausa: <b>{stats.started - stats.games - stats.abandoned}</b>.</p><p>Il successo considera tutte le partite iniziate con un tentativo, inclusi gli abbandoni e quelle in pausa. Puoi passare tra libera, del giorno e amici senza perdere i progressi. Ogni sfida condivisa viene conteggiata una volta per questo browser. Le vittorie includono quelle con indizio.</p><h3>VITTORIE PER TENTATIVO</h3>{stats.distribution.map((count, index) => <div className="statrow" key={index}><span>{index + 1}</span><div><i style={{width: `${100 * count / Math.max(1, ...stats.distribution)}%`}}/></div><b>{count}</b></div>)}<p>Le statistiche precedenti sono conservate; gli abbandoni passati non erano registrati.</p></>}
+    </Modal>}
   </div>;
 }
 
-createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
+createRoot(document.getElementById('root')!).render(<StrictMode><App/></StrictMode>);
