@@ -1,67 +1,164 @@
-import React,{useEffect,useMemo,useState} from 'react';
-import{createRoot}from'react-dom/client';
-import{ArrowRight,RotateCcw,Trophy,Info,BarChart3,Search,Share2,Check,X,ChevronDown}from'lucide-react';
+import React, {useEffect, useMemo, useReducer, useRef, useState} from 'react';
+import {createRoot} from 'react-dom/client';
+import {ArrowRight, RotateCcw, Trophy, Info, BarChart3, Search, Share2, Check, X, ChevronDown} from 'lucide-react';
 import raw from './players.json';
+import {addGuess, clubHint, commonClubs, datasetVersion, isFinished, peakDirection, peakHint,
+  pickPlayer, restartProgress, searchPlayers} from './game.ts';
+import type {Difficulty, Player, Progress} from './game.ts';
+import {loadProgress, saveProgress} from './storage.ts';
 import './style.css';
-type Difficulty='facile'|'media'|'difficile';
-type Player={id:number;name:string;nationality:string;role:string;peak:string;clubs:string[];clubsVerified?:boolean;difficulty:Difficulty};
-const players=raw as Player[];
-const normalize=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
-// Club aliases are canonical IDs: spelling differences must never change a hint.
-const clubAliases:Record<string,string>={
- 'psg':'parissaintgermain','parissg':'parissaintgermain','parissaintgermain':'parissaintgermain',
- 'inter':'internazionale','intermilan':'internazionale','fcinternazionale':'internazionale','internazionalemilano':'internazionale',
- 'acmilan':'milan','milan':'milan','manutd':'manchesterunited','manunited':'manchesterunited',
- 'manchesterutd':'manchesterunited','manchestercityfc':'manchestercity','manchestercity':'manchestercity',
- 'atleticomadrid':'atleticodemadrid','atleticodemadrid':'atleticodemadrid',
- 'barca':'barcellona','fcbarcelona':'barcellona','barcelona':'barcellona','barcellona':'barcellona',
- 'bayernmunchen':'bayernmonaco','bayernmunich':'bayernmonaco','bayernmonaco':'bayernmonaco',
- 'juventusfc':'juventus','realmadri':'realmadrid','realmadridcf':'realmadrid',
- 'olympiquedemarseille':'marsiglia','marseille':'marsiglia',
- 'borussiadortmund':'dortmund','bvb':'dortmund',
- 'sportingcp':'sportinglisbona','sportingclubdeportugal':'sportinglisbona',
- 'ajaxamsterdam':'ajax','afcajax':'ajax'
+
+const players = raw as Player[];
+const version = datasetVersion(players);
+// Access storage inside the guarded read/write functions: even the browser getter can throw.
+const storage = {
+  getItem: (key: string) => window.localStorage.getItem(key),
+  setItem: (key: string, value: string) => window.localStorage.setItem(key, value),
 };
-const clubId=(name:string)=>{const id=normalize(name);return clubAliases[id]||id};
-const sharedClub=(a:Player,b:Player)=>a.clubs.length>0&&b.clubs.length>0&&a.clubs.some(c=>b.clubs.some(d=>clubId(c)===clubId(d)));
-const clubHint=(a:Player,b:Player)=>!a.clubs.length||!b.clubs.length?'unknown':sharedClub(a,b)?'match':'miss';
-const storeKey='football-guesser-v1';
-type Stats={wins:number;losses:number;games:number;streak:number;best:number;distribution:number[]};
-const initialStats:Stats={wins:0,losses:0,games:0,streak:0,best:0,distribution:Array(8).fill(0)};
-function loadStats():Stats{try{const v=JSON.parse(localStorage.getItem(storeKey)||'null');return v&&Array.isArray(v.distribution)?v:initialStats}catch{return initialStats}}
-function randomPlayer(level:Difficulty,previous?:number){const pool=players.filter(p=>p.difficulty===level&&p.clubsVerified&&p.id!==previous);return pool[Math.floor(Math.random()*pool.length)]??players[0]}
-// Compare the centre of each editorial peak, not any overlap between huge ranges.
-const peakCentre=(peak:string)=>{const years=peak.split('-').map(Number);return (years[0]+(years[1]??years[0]))/2};
-function peakHint(a:string,b:string){const distance=Math.abs(peakCentre(a)-peakCentre(b));return distance<=2?'match':distance<=6?'near':'miss'}
-function peakDirection(guess:string,answer:string){const delta=peakCentre(answer)-peakCentre(guess);return Math.abs(delta)<=2?'':delta>0?' ↑':' ↓'}
-function App(){
- const [level,setLevel]=useState<Difficulty>('facile');
- const [target,setTarget]=useState<Player>(()=>randomPlayer('facile'));
- const [guesses,setGuesses]=useState<Player[]>([]);
- const [query,setQuery]=useState('');
- const [menu,setMenu]=useState(false);
- const [modal,setModal]=useState<'help'|'stats'|null>(null);
- const [stats,setStats]=useState<Stats>(loadStats);
- const [recorded,setRecorded]=useState(false);
- const [copied,setCopied]=useState(false);
- const won=guesses.some(p=>p.id===target.id);
- const finished=won||guesses.length>=8;
- const results=useMemo(()=>players.filter(p=>!guesses.some(g=>g.id===p.id)&&normalize(p.name).includes(normalize(query))).slice(0,8),[query,guesses]);
- const restart=(difficulty=level)=>{setLevel(difficulty);setTarget(p=>randomPlayer(difficulty,p.id));setGuesses([]);setQuery('');setMenu(false);setRecorded(false);setCopied(false)};
- const submit=(p:Player)=>{if(finished)return;setGuesses(g=>[...g,p]);setQuery('');setMenu(false)};
- useEffect(()=>{if(!finished||recorded)return;setRecorded(true);setStats(prev=>{const next={...prev,distribution:[...prev.distribution],games:prev.games+1,wins:prev.wins+(won?1:0),losses:prev.losses+(won?0:1),streak:won?prev.streak+1:0,best:won?Math.max(prev.best,prev.streak+1):prev.best};if(won)next.distribution[guesses.length-1]++;localStorage.setItem(storeKey,JSON.stringify(next));return next})},[finished,won,guesses.length,recorded]);
- const share=async()=>{const symbols=guesses.map(p=>[p.role===target.role?'🟩':'🟥',clubHint(p,target)==='match'?'🟩':clubHint(p,target)==='unknown'?'⬜':'🟥',p.nationality===target.nationality?'🟩':'🟥',peakHint(p.peak,target.peak)==='match'?'🟩':peakHint(p.peak,target.peak)==='near'?'🟨':'🟥'].join('')).join('\n');const txt=`FOOTBALL GUESSER ⚽ ${level.toUpperCase()} ${won?guesses.length+'/8':'X/8'}\n${symbols}`;try{if(navigator.share)await navigator.share({text:txt});else{await navigator.clipboard.writeText(txt);setCopied(true)}}catch{try{await navigator.clipboard.writeText(txt);setCopied(true)}catch{}}};
- return <div className="app"><div className="noise"/><header><div className="topline"><span>EST. 1986 — LEGENDS EDITION</span><span>VOL. 01 / 2026</span></div><div className="brand"><div className="ball">⚽</div><div><div className="eyebrow">THE BEAUTIFUL GAME PRESENTS</div><h1>FOOTBALL<br/><em>GUESSER</em></h1></div></div><div className="nav"><button onClick={()=>setModal('help')}><Info size={17}/> REGOLE</button><span className="navtag">500 LEGGENDE • 40 ANNI</span><button onClick={()=>setModal('stats')}><BarChart3 size={17}/> STATS</button></div></header>
- <main><section className="intro"><span className="kicker">◆ INDOVINA LA LEGGENDA ◆</span><h2>CHI È IL <i>MISTERIOSO?</i></h2><p>Hai <strong>8 tentativi</strong> per indovinare il calciatore. Confronta ruolo, club, nazionalità ed epoca d'oro.</p></section>
- <div className="difficulty"><span>DIFFICOLTÀ</span><div className="levels">{(['facile','media','difficile'] as const).map(l=><button key={l} className={level===l?'active':''} onClick={()=>restart(l)}>{l.toUpperCase()}</button>)}</div></div>
- <div className="status"><div><span className="smalllabel">TENTATIVI</span><strong>{String(guesses.length).padStart(2,'0')} <small>/ 08</small></strong></div><div className="ticks">{Array.from({length:8},(_,i)=><span key={i} className={i<guesses.length?'used':''}/>)}</div><button className="new" onClick={()=>restart()} title="Nuova partita"><RotateCcw size={18}/><span>NUOVA</span></button></div>
- {!finished?<div className="searchArea"><label htmlFor="player">IL TUO PROSSIMO TENTATIVO</label><div className="searchWrap"><Search size={21}/><input id="player" autoComplete="off" placeholder="Cerca un calciatore..." value={query} onChange={e=>{setQuery(e.target.value);setMenu(true)}} onFocus={()=>setMenu(true)} onKeyDown={e=>{if(e.key==='Enter'&&results.length)submit(results[0]);if(e.key==='Escape')setMenu(false)}}/><ChevronDown size={17}/></div>{menu&&query.trim()&&<div className="suggestions">{results.length?results.map(p=><button key={p.id} onClick={()=>submit(p)}><span>{p.name}</span><small>{p.nationality} · {p.role}</small><ArrowRight size={15}/></button>):<div className="noresult">Nessun calciatore trovato. Prova un altro nome.</div>}</div>}</div>:<div className={'outcome '+(won?'victory':'defeat')}><Trophy size={28}/><div><strong>{won?'LEGGENDA INDOVINATA!':'FISCHIO FINALE!'}</strong><p>{won?`Hai trovato ${target.name} in ${guesses.length} tentativi.`:`Il calciatore era ${target.name}.`}</p></div><div className="outcomeButtons"><button onClick={share}><Share2 size={16}/>{copied?'COPIATO':'CONDIVIDI'}</button><button onClick={()=>restart()}><RotateCcw size={16}/>RIGIOCA</button></div></div>}
- <div className="board"><div className="boardhead"><span>CALCIATORE</span><span>RUOLO</span><span>CLUB</span><span>NAZIONE</span><span>EPOCA</span></div>{guesses.length===0?<div className="empty"><div>★</div><strong>IL CAMPO TI ASPETTA</strong><span>Scrivi un nome per iniziare la partita.</span></div>:guesses.map((p,i)=><div className="guess" key={i}><div className="playername"><small>#{String(i+1).padStart(2,'0')}</small><strong>{p.name}</strong></div><div className={'tile '+(p.role===target.role?'match':'miss')}>{p.role===target.role?<Check size={13}/>:<X size={12}/>}<span>{p.role}</span></div><div className={'tile '+(clubHint(p,target)==='unknown'?'unknown':clubHint(p,target))}><span>{clubHint(p,target)==='unknown'?'N/D':(sharedClub(p,target)?'SÌ':'NO')}</span></div><div className={'tile '+(p.nationality===target.nationality?'match':'miss')}><span>{p.nationality}</span></div><div className={'tile '+peakHint(p.peak,target.peak)}><span>{p.peak}{peakDirection(p.peak,target.peak)}</span></div></div>)}</div>
- <div className="legend"><span><b className="green"/>CORRETTO</span><span><b className="gold"/>EPOCA VICINA</span><span><b className="red"/>DIVERSO</span></div>
- <aside><span>⚑</span> <strong>NOTA SUI CLUB:</strong> la casella diventa verde se il calciatore scelto condivide almeno un club con quello misterioso. I club sono liste redazionali ancora in revisione: N/D indica un dato mancante, non un indizio negativo. Le epoche sono stime editoriali e non valutazioni FIFA ufficiali.</aside>
- </main><footer><div>FOOTBALL GUESSER © 2026</div><div>BUILT FOR THE LOVE OF FOOTBALL ⚽</div></footer>
- {modal&&<div className="overlay" onClick={()=>setModal(null)}><div className="dialog" onClick={e=>e.stopPropagation()}><button className="close" onClick={()=>setModal(null)}><X/></button>{modal==='help'?<><span className="kicker">MANUALE DEL GIOCATORE</span><h2>COME SI GIOCA</h2><p>Indovina il calciatore misterioso entro 8 tentativi. Puoi cercare fra tutti i 500 giocatori, indipendentemente dalla difficoltà selezionata.</p><p><b>RUOLO:</b> verde se coincide (POR, DIF, CEN, ATT).</p><p><b>CLUB:</b> verde se almeno uno dei club associati ai due giocatori coincide.</p><p><b>NAZIONE:</b> verde se coincide la nazionalità sportiva.</p><p><b>EPOCA:</b> verde se i centri dei periodi d'oro distano al massimo 2 anni, giallo se distano da 3 a 6 anni, rosso altrimenti. La freccia ↑ indica che il misterioso è più recente, ↓ che è precedente.</p><p>La difficoltà influenza soltanto la scelta del giocatore misterioso. Cambiare livello avvia una nuova partita.</p></>:<><span className="kicker">IL TUO ALBO D'ORO</span><h2>STATISTICHE</h2><div className="statsgrid">{[['PARTITE',stats.games],['VITTORIE',stats.wins],['SUCCESSO',stats.games?Math.round(stats.wins/stats.games*100)+'%':'0%'],['SERIE RECORD',stats.best]].map(([l,v])=><div key={l}><strong>{v}</strong><small>{l}</small></div>)}</div><h3>VITTORIE PER TENTATIVO</h3>{stats.distribution.map((n,i)=><div className="statrow" key={i}><span>{i+1}</span><div><i style={{width:`${Math.max(5,100*n/Math.max(1,...stats.distribution))}%`}}/></div><b>{n}</b></div>)}</>}</div></div>}
- </div>
+type Action = {type: 'guess'; playerId: number} | {type: 'restart'; target: Player};
+const reducer = (state: Progress, action: Action) => action.type === 'guess'
+  ? addGuess(state, action.playerId, players) : restartProgress(state, action.target);
+
+function App() {
+  const [progress, dispatch] = useReducer(reducer, undefined, () => loadProgress(storage, players, version));
+  const {level, stats} = progress;
+  const target = players.find(player => player.id === progress.targetId)!;
+  const guesses = progress.guessIds.map(id => players.find(player => player.id === id)!);
+  const [query, setQuery] = useState('');
+  const [menu, setMenu] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [modal, setModal] = useState<'help' | 'stats' | 'restart' | null>(null);
+  const [pendingLevel, setPendingLevel] = useState<Difficulty>('facile');
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(true);
+  const [shareError, setShareError] = useState(false);
+  const won = progress.guessIds.includes(target.id);
+  const finished = isFinished(progress);
+  const results = useMemo(() => searchPlayers(players, query, progress.guessIds), [query, progress.guessIds]);
+  const showSuggestions = menu && query.trim().length > 0;
+  const compatible = !won && guesses.length > 0 && (() => {
+    const guess = guesses.at(-1)!;
+    return guess.role === target.role && guess.nationality === target.nationality
+      && clubHint(guess, target) === 'match' && peakHint(guess.peak, target.peak) === 'match';
+  })();
+
+  useEffect(() => { setSaved(saveProgress(storage, progress)); }, [progress]);
+  useEffect(() => {
+    if (showSuggestions && activeIndex >= 0) {
+      resultsRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({block: 'nearest'});
+    }
+  }, [activeIndex, showSuggestions]);
+  useEffect(() => {
+    if (!modal) return;
+    const previousFocus = document.activeElement;
+    const dialog = dialogRef.current;
+    dialog?.querySelector<HTMLButtonElement>('button')?.focus();
+    const close = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setModal(null);
+      if (event.key !== 'Tab' || !dialog) return;
+      const controls = [...dialog.querySelectorAll<HTMLButtonElement>('button')];
+      const first = controls[0], last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    window.addEventListener('keydown', close);
+    return () => {
+      window.removeEventListener('keydown', close);
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus();
+    };
+  }, [modal]);
+
+  const performRestart = (difficulty: Difficulty) => {
+    dispatch({type: 'restart', target: pickPlayer(players, difficulty, progress.recentIds)});
+    setQuery(''); setMenu(false); setActiveIndex(-1); setCopied(false); setShareError(false);
+    setModal(null);
+  };
+  const restart = (difficulty = level) => {
+    if (guesses.length > 0 && !finished) { setPendingLevel(difficulty); setModal('restart'); }
+    else performRestart(difficulty);
+  };
+  const submit = (player: Player) => {
+    if (finished) return;
+    dispatch({type: 'guess', playerId: player.id});
+    setQuery(''); setMenu(false); setActiveIndex(-1);
+  };
+  const onSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing) return;
+    if (event.key === 'Escape') { setMenu(false); setActiveIndex(-1); return; }
+    if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && results.length) {
+      event.preventDefault(); setMenu(true);
+      setActiveIndex(index => !menu || index < 0
+        ? event.key === 'ArrowDown' ? 0 : results.length - 1
+        : (index + (event.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length);
+    }
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (showSuggestions && activeIndex >= 0 && results[activeIndex]) submit(results[activeIndex]);
+    }
+  };
+  const share = async () => {
+    const symbols = guesses.map(player => [player.role === target.role ? '🟩' : '🟥',
+      clubHint(player, target) === 'match' ? '🟩' : clubHint(player, target) === 'unknown' ? '⬜' : '🟥',
+      player.nationality === target.nationality ? '🟩' : '🟥',
+      (peakHint(player.peak, target.peak) === 'match' ? '🟩' : peakHint(player.peak, target.peak) === 'near' ? '🟨' : '🟥')
+        + peakDirection(player.peak, target.peak).trim()].join('')).join('\n');
+    const text = `FOOTBALL GUESSER ⚽ ${level.toUpperCase()} ${won ? guesses.length + '/8' : 'X/8'}\n${symbols}`;
+    setShareError(false);
+    try {
+      if (navigator.share) await navigator.share({text});
+      else { await navigator.clipboard.writeText(text); setCopied(true); }
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') return;
+      try { await navigator.clipboard.writeText(text); setCopied(true); } catch { setShareError(true); }
+    }
+  };
+
+  return <div className="app"><div className="noise"/>
+    <header>
+      <div className="topline"><span>EST. 1986 — LEGENDS EDITION</span><span>VOL. 01 / 2026</span></div>
+      <div className="brand"><div className="ball">⚽</div><div><div className="eyebrow">THE BEAUTIFUL GAME PRESENTS</div><h1>FOOTBALL<br/><em>GUESSER</em></h1></div></div>
+      <div className="nav"><button onClick={() => setModal('help')}><Info size={17}/> REGOLE</button><span className="navtag">500 LEGGENDE • 40 ANNI</span><button onClick={() => setModal('stats')}><BarChart3 size={17}/> STATS</button></div>
+    </header>
+    <main>
+      <section className="intro"><span className="kicker">◆ INDOVINA LA LEGGENDA ◆</span><h2>CHI È IL <i>MISTERIOSO?</i></h2><p>Hai <strong>8 tentativi</strong> per indovinare il calciatore. Confronta ruolo, club, nazionalità ed epoca d'oro.</p></section>
+      <div className="difficulty"><span>DIFFICOLTÀ</span><div className="levels">{(['facile', 'media', 'difficile'] as const).map(l => <button key={l} className={level === l ? 'active' : ''} aria-pressed={level === l} onClick={() => { if (l !== level) restart(l); }}>{l.toUpperCase()}</button>)}</div></div>
+      <div className="status"><div><span className="smalllabel">TENTATIVI</span><strong>{String(guesses.length).padStart(2, '0')} <small>/ 08</small></strong></div><div className="ticks">{Array.from({length: 8}, (_, i) => <span key={i} className={i < guesses.length ? 'used' : ''}/>)}</div><button className="new" onClick={() => restart()} title="Nuova partita"><RotateCcw size={18}/><span>NUOVA</span></button></div>
+      {!saved && <p className="notice" role="status">Il browser non consente il salvataggio: la partita resterà disponibile solo in questa pagina.</p>}
+      {!finished ? <div className="searchArea">
+        <label htmlFor="player">IL TUO PROSSIMO TENTATIVO</label>
+        <div className="searchControl"><div className="searchWrap"><Search size={21}/><input id="player" role="combobox" aria-autocomplete="list" aria-expanded={showSuggestions} aria-controls="player-results" aria-activedescendant={showSuggestions && results[activeIndex] ? `player-option-${results[activeIndex].id}` : undefined} aria-describedby="search-help" autoComplete="off" placeholder="Cerca un calciatore..." value={query}
+          onChange={event => { setQuery(event.target.value); setMenu(true); setActiveIndex(-1); }}
+          onFocus={() => setMenu(true)} onBlur={() => { setMenu(false); setActiveIndex(-1); }} onKeyDown={onSearchKeyDown}/><ChevronDown size={17}/></div>
+        <div className="srOnly" role="status" aria-live="polite">{showSuggestions ? `${results.length} risultati mostrati. Usa le frecce per selezionare un calciatore.` : ''}</div>
+        {showSuggestions && <div className="suggestions" ref={resultsRef} id="player-results" role="listbox" aria-label="Calciatori trovati">{results.length ? results.map((player, index) => <button type="button" role="option" aria-selected={activeIndex === index} id={`player-option-${player.id}`} tabIndex={-1} key={player.id} onMouseDown={event => event.preventDefault()} onMouseMove={() => setActiveIndex(index)} onClick={() => submit(player)}><span>{player.name}</span><small>{player.nationality} · {player.role}</small><ArrowRight size={15}/></button>) : <div className="noresult">Nessun calciatore trovato. Prova un altro nome.</div>}</div>}</div>
+        <p id="search-help" className="searchHelp">Scegli un nome oppure usa ↑ e ↓, poi Invio per confermare.</p>
+      </div> : <div className={'outcome ' + (won ? 'victory' : 'defeat')} role="status"><Trophy size={28}/><div><strong>{won ? 'LEGGENDA INDOVINATA!' : 'FISCHIO FINALE!'}</strong><p>{won ? `Hai trovato ${target.name} in ${guesses.length} tentativi.` : `Il calciatore era ${target.name}.`}</p></div><div className="outcomeButtons"><button onClick={share}><Share2 size={16}/>{copied ? 'COPIATO' : 'CONDIVIDI'}</button><button onClick={() => restart()}><RotateCcw size={16}/>RIGIOCA</button></div></div>}
+      {shareError && <p className="notice" role="status">Condivisione non disponibile in questo browser. Puoi salvare una schermata del risultato.</p>}
+      {compatible && <p className="notice" role="status">Tutti gli indizi sono compatibili, ma il giocatore è diverso. Prova un altro nome.</p>}
+      <div className="board"><div className="boardhead"><span>CALCIATORE</span><span>RUOLO</span><span>CLUB</span><span>NAZIONE</span><span>EPOCA</span></div>
+        {guesses.length === 0 ? <div className="empty"><div>★</div><strong>IL CAMPO TI ASPETTA</strong><span>Scrivi un nome per iniziare la partita.</span></div> : guesses.map((player, index) => <div className="guess" key={player.id}>
+          <div className="playername"><small>#{String(index + 1).padStart(2, '0')}</small><strong>{player.name}</strong></div>
+          <div className={'tile ' + (player.role === target.role ? 'match' : 'miss')}>{player.role === target.role ? <Check size={13}/> : <X size={12}/>}<span>{player.role}</span></div>
+          <div className={'tile ' + clubHint(player, target)}><span>{clubHint(player, target) === 'unknown' ? 'N/D' : clubHint(player, target) === 'match' ? 'SÌ' : 'NO'}</span></div>
+          <div className={'tile ' + (player.nationality === target.nationality ? 'match' : 'miss')}><span>{player.nationality}</span></div>
+          <div className={'tile ' + peakHint(player.peak, target.peak)}><span>{player.peak}{peakDirection(player.peak, target.peak)}</span></div>
+        </div>)}
+      </div>
+      <div className="legend"><span><b className="green"/>COMPATIBILE</span><span><b className="gold"/>EPOCA VICINA</span><span><b className="red"/>DIVERSO</span></div>
+      {finished && <section className="reveal" aria-label="Scheda del calciatore misterioso"><h3>{target.name}</h3><p>{target.nationality} · {target.role} · Epoca: {target.peak}</p><p><strong>Club nel gioco:</strong> {target.clubs.join(', ') || 'N/D'}</p><details><summary>Rivedi i club condivisi nei tuoi tentativi</summary><ul>{guesses.map(player => <li key={player.id}><strong>{player.name}:</strong> {clubHint(player, target) === 'unknown' ? 'dato mancante' : commonClubs(player, target).join(', ') || 'nessun club comune nelle liste'}</li>)}</ul></details></section>}
+      <aside><span>⚑</span> <strong>NOTA SUI CLUB:</strong> verde indica almeno un club comune nelle liste del gioco. Le carriere sono ancora in revisione: rosso significa nessuna corrispondenza nelle liste, che possono essere incomplete; N/D indica un dato mancante. Le epoche sono stime editoriali. Quattro indizi verdi non garantiscono che il nome sia quello giusto.</aside>
+    </main>
+    <footer><div>FOOTBALL GUESSER © 2026</div><div>BUILT FOR THE LOVE OF FOOTBALL ⚽</div></footer>
+    {modal && <div className="overlay" onClick={() => setModal(null)}><div className="dialog" ref={dialogRef} role={modal === 'restart' ? 'alertdialog' : 'dialog'} aria-modal="true" aria-labelledby="dialog-title" onClick={event => event.stopPropagation()}><button className="close" aria-label="Chiudi" onClick={() => setModal(null)}><X/></button>
+      {modal === 'restart' ? <><span className="kicker">PARTITA IN CORSO</span><h2 id="dialog-title">ABBANDONARE LA PARTITA?</h2><p>I tentativi saranno cancellati e la partita verrà conteggiata come abbandonata. La serie di vittorie si interromperà.</p><div className="confirmButtons"><button onClick={() => setModal(null)}>ANNULLA</button><button onClick={() => performRestart(pendingLevel)}>ABBANDONA E CONTINUA</button></div></> : modal === 'help' ? <><span className="kicker">MANUALE DEL GIOCATORE</span><h2 id="dialog-title">COME SI GIOCA</h2><p>Indovina il calciatore misterioso entro 8 tentativi. Puoi cercare fra tutti i 500 giocatori, indipendentemente dalla difficoltà selezionata.</p><p><b>RUOLO:</b> verde se coincide (POR, DIF, CEN, ATT).</p><p><b>CLUB:</b> verde se almeno uno dei club nelle due liste coincide. Le liste editoriali possono essere incomplete.</p><p><b>NAZIONE:</b> verde se coincide la nazionalità sportiva.</p><p><b>EPOCA:</b> verde se i centri dei periodi d'oro distano al massimo 2 anni; giallo se distano più di 2 e fino a 6 anni; rosso oltre 6. La freccia ↑ indica che il misterioso è più recente, ↓ che è precedente.</p><p>I colori confrontano gli attributi: per vincere devi trovare esattamente il calciatore misterioso.</p><p>La difficoltà influenza soltanto la scelta del misterioso. Cambiare livello avvia una nuova partita; il livello già attivo non la riavvia. Il browser salva automaticamente la partita. Le ultime 20 risposte vengono escluse dal sorteggio quando il pool lo consente.</p></> : <><span className="kicker">IL TUO ALBO D'ORO</span><h2 id="dialog-title">STATISTICHE</h2>
+        <div className="statsgrid">{[['COMPLETATE', stats.games], ['VITTORIE', stats.wins], ['SUCCESSO', stats.started ? Math.round(stats.wins / stats.started * 100) + '%' : '0%'], ['SERIE RECORD', stats.best]].map(([label, value]) => <div key={label}><strong>{value}</strong><small>{label}</small></div>)}</div>
+        <p>Iniziate: <b>{stats.started}</b> · Abbandonate: <b>{stats.abandoned}</b>. Il successo considera tutte le partite iniziate con almeno un tentativo, inclusa quella in corso. Gli abbandoni interrompono la serie.</p><p>Le statistiche precedenti sono conservate; gli abbandoni passati non erano registrati.</p>
+        <h3>VITTORIE PER TENTATIVO</h3>{stats.distribution.map((n, index) => <div className="statrow" key={index}><span>{index + 1}</span><div><i style={{width: `${100 * n / Math.max(1, ...stats.distribution)}%`}}/></div><b>{n}</b></div>)}
+      </>}
+    </div></div>}
+  </div>;
 }
 
 createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
